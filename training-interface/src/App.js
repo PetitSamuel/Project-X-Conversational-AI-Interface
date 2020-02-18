@@ -19,7 +19,7 @@ class App extends Component {
       return (
         
         <div class = "container-fluid">
-          <div className = "notification"> Welcome to Project X, a conversational AI training interface (in development).</div>
+          <div className = "notification"> Welcome to Project X, TEST, a conversational AI training interface (in development).</div>
           <aside class = "sidebar col-md-2 col-lg-2 px-0">
             <div class = "navbar">
               <nav class = "navbar-light bg-white border-bottom p-0">
@@ -52,7 +52,10 @@ class App extends Component {
             </ul>
           </div>
           </aside> 
-        </div>
+          <div class = "container-fluid">
+         
+          </div>
+        
 
       )
     }
