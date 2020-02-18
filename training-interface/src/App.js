@@ -59,7 +59,7 @@ class App extends Component {
             <ul class="nav flex-column">
               <li class="nav-item">
                 <a class={this.state.route == 1 ? 'nav-link active': 'nav-link'}  onClick={(e) => this.setState({route:1})}>
-                  <h5><MdChatBubbleOutline /> Assistants</h5>
+                  <h5><MdChatBubbleOutline /> The Assistants</h5>
                 </a>
               </li>
               <li class="nav-item">
