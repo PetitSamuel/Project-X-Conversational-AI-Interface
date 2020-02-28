@@ -1,0 +1,44 @@
+version: '3.7'
+services:
+    rasa:
+        image: rasa/rasa:latest-full
+        container_name: rasa
+        networks: ['rasa-network']
+        ports:
+        - "5005:5005"
+        volumes:
+        - "./rasa-app-data/models:/app/models"
+        - "./rasa-app-data/logs:/app/logs"
+        command: "run --enable-api --debug"
+    project-x-frontend:
+        build: ./training-interface
+        restart: on-failure
+        container_name: project-x-frontend
+        networks: ['rasa-network']
+        ports:
+            - "3000:3000"
+        volumes:
+            - ./training-interface:/training-interface
+        environment:
+        - RASA_ENDPOINT=${RASA_ENDPOINT}
+        depends_on:
+        - rasa
+#       - db
+        restart: on-failure
+#    db:
+#        image: mariadb:latest
+#        volumes:
+#            - $MYSQL_DATA:/var/lib/mysql
+#        environment:
+            #to connect : 
+            #mysql --host=127.0.0.1 --port=3306 -u root -p
+#            - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+#            - MYSQL_USER=${MYSQL_USER}
+#            - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+#            - MYSQL_DATABASE=${MYSQL_DATABASE}
+#        ports:
+#            - "3306:3306"
+#        restart: on-failure
+#        expose:
+#            - "3306"
+networks: {rasa-network: {}}
