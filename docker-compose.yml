@@ -1,14 +1,15 @@
 version: '3.7'
+#Remove comments when we need rasa or a database in the system 
 services:
-    rasa:
-        image: rasa/rasa:latest-full
-        container_name: rasa
-        ports:
-        - "5005:5005"
-        volumes:
-        - "./rasa-app-data/models:/app/models"
-        - "./rasa-app-data/logs:/app/logs"
-        command: "run --enable-api --debug"
+#    rasa:
+#        image: rasa/rasa:latest-full
+#        container_name: rasa
+#        ports:
+#        - "5005:5005"
+#        volumes:
+#        - "./rasa-app-data/models:/app/models"
+#        - "./rasa-app-data/logs:/app/logs"
+#        command: "run --enable-api --debug"
     project-x-frontend:
         build: ./training-interface
         restart: on-failure
@@ -23,19 +24,19 @@ services:
         - rasa
         - db
         restart: on-failure
-    db:
-        image: mariadb:latest
-        volumes:
-            - $MYSQL_DATA:/var/lib/mysql
-        environment:
+#    db:
+#        image: mariadb:latest
+#        volumes:
+#            - $MYSQL_DATA:/var/lib/mysql
+#        environment:
            #to connect from cmd line:
            #mysql --host=127.0.0.1 --port=3306 -u root -p
-            - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-            - MYSQL_USER=${MYSQL_USER}
-            - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-            - MYSQL_DATABASE=${MYSQL_DATABASE}
-        ports:
-            - "3306:3306"
-        restart: on-failure
-        expose:
-            - "3306"
+#            - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+#            - MYSQL_USER=${MYSQL_USER}
+#            - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+#            - MYSQL_DATABASE=${MYSQL_DATABASE}
+#        ports:
+#            - "3306:3306"
+#        restart: on-failure
+#        expose:
+#            - "3306"
