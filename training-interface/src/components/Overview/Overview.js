@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import Row from 'react-bootstrap/Row';
-import './App.css';
+import '../../App.css';
 
 
-class Analytics extends Component {
+class Overview extends Component {
 
   render () {
     
@@ -12,8 +12,8 @@ class Analytics extends Component {
     <Row>
 
         <div className ="tile1">
-            <h3 style ={{paddingBottom: "6px"}}>Analytics</h3>
-          <div classname = "stat-box">
+            <h3 style ={{paddingBottom: "6px"}}>Overview</h3>
+          <div className = "stat-box">
             
             
           </div>   
@@ -37,4 +37,4 @@ class Analytics extends Component {
     )
   }
 }
-export default Analytics;
+export default Overview;

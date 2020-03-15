@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Row from 'react-bootstrap/Row';
-import './App.css';
+import '../../App.css';
 
 
 class Tools extends Component {
@@ -13,7 +13,7 @@ class Tools extends Component {
 
         <div className ="tile1">
             <h3 style ={{paddingBottom: "6px"}}>Tools</h3>
-          <div classname = "stat-box">
+          <div className = "stat-box">
             
             
           </div>   
