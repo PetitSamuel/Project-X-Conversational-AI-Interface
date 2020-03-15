@@ -71,7 +71,12 @@
     min-height: calc(100vh - 7.5rem);
 }
 
-  
+.card{
+  border: 1px solid #13beb1;
+  box-shadow: 0 .5rem 0.6rem rgba(19,190,177,.45)!important;
+  border-radius: .25rem!important;
+  padding: 20px;
+}
 
 .tile1{
   border: 1px solid #13beb1;
@@ -152,6 +157,10 @@
   font-weight: 400; }
 
 
-
+  .icon-big {
+  font-size: 3em;
+  min-height: 64px; 
+  font-weight: bold;
+  line-height: 59px; }
 
 
