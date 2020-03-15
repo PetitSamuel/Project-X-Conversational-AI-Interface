@@ -1,15 +1,15 @@
 version: '3.7'
 #Remove comments when we need rasa or a database in the system 
 services:
-#    rasa:
-#        image: rasa/rasa:latest-full
-#        container_name: rasa
-#        ports:
-#        - "5005:5005"
-#        volumes:
-#        - "./rasa-app-data/models:/app/models"
-#        - "./rasa-app-data/logs:/app/logs"
-#        command: "run --enable-api --debug"
+    rasa:
+        image: rasa/rasa:latest-full
+        container_name: rasa
+        ports:
+        - "5005:5005"
+        volumes:
+        - "./rasa-app-data/models:/app/models"
+        - "./rasa-app-data/logs:/app/logs"
+        command: "run --enable-api --debug"
     project-x-frontend:
         build: ./training-interface
         restart: on-failure
@@ -22,7 +22,7 @@ services:
         - RASA_ENDPOINT=${RASA_ENDPOINT}
         depends_on:
         - rasa
-        - db
+#       - db
         restart: on-failure
 #    db:
 #        image: mariadb:latest
