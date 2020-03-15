@@ -22,21 +22,21 @@ services:
         - RASA_ENDPOINT=${RASA_ENDPOINT}
         depends_on:
         - rasa
-#       - db
+        - db
         restart: on-failure
-#    db:
-#        image: mariadb:latest
-#        volumes:
-#            - $MYSQL_DATA:/var/lib/mysql
-#        environment:
-           #to connect from cmd line:
-           #mysql --host=127.0.0.1 --port=3306 -u root -p
-#            - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-#            - MYSQL_USER=${MYSQL_USER}
-#            - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-#            - MYSQL_DATABASE=${MYSQL_DATABASE}
-#        ports:
-#            - "3306:3306"
-#        restart: on-failure
-#        expose:
-#            - "3306"
+    db:
+        image: mongo:latest
+        volumes:
+            - $DATABASE_DATA:/$DATABASE_DATA
+            - ./init-db.js:/docker-entrypoint-initdb.d/init-db.js:ro
+        environment:
+            # to connect from cmd line run (read / write user) for root access use root user
+            # mongo --port 27017 -u "user" -p "password" --authenticationDatabase "db"
+            - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
+            - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+            - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+        ports:
+            - "27017:27017"
+        restart: on-failure
+        expose:
+            - "27017"
