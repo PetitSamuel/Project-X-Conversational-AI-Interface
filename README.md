@@ -39,5 +39,17 @@ MYSQL_DATABASE=db
 
 In this case, the root user for the database uses the password "password", there is also a user with the credentials "user" "password" and the schema used is "db".
 
+# Database
+This system uses Mongodb as a docker container. Once the container is running you can connect locally from the command line using the following command : 
+```
+mongo --port 27017 -u "user" -p "password" --authenticationDatabase "db"
+```
+This will log you in as a normal user with read write access.
 
-To note : most of the services are currently commented out, to enable the use of the database and / or rasa endpoint then just remove the comments from the docker-compose.yml file in this same directory.
+If you need admin access then use the following : 
+
+```
+mongo --port 27017 -u "root" -p "root" --authenticationDatabase "db"
+```
+
+To note : these users are create when the database is initialised. The initialisation script is in the root directory : "init-db.js".
