@@ -19,10 +19,30 @@ services:
         volumes:
             - ./training-interface:/training-interface
         environment:
-        - RASA_ENDPOINT=${RASA_ENDPOINT}
+        # For some reason for react env variables to be imported properly
+        # you need the REACT_APP prefix & the name can't contain underscores.
+        - REACT_APP_RASAENDPOINT=${RASA_ENDPOINT}
         depends_on:
         - rasa
-        - db
+        - server
+        restart: on-failure
+    server:
+        build: ./server
+        restart: always
+        container_name: server
+        ports:
+            - "5000:5000"
+        volumes:
+            - ./server:/server
+        environment:
+            - RASA_ENDPOINT=${RASA_ENDPOINT}
+            - SERVER_PORT=${SERVER_PORT}
+            - MONGO_CONNECTION_STRING=${MONGO_CONNECTION_STRING}
+            # script to wait for mongo to be fully up & running
+            - WAIT_HOSTS=db:27017
+        depends_on:
+            - db
+            - rasa
         restart: on-failure
     db:
         image: mongo:latest
@@ -36,7 +56,7 @@ services:
             - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
             - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
         ports:
-            - "27017:27017"
+            - "${MONGO_PORT}:${MONGO_PORT}"
         restart: on-failure
         expose:
-            - "27017"
+            - ${MONGO_PORT}
