@@ -8,7 +8,12 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const browserHistory = createBrowserHistory();
-console.log(process.env.REACT_APP_RASAENDPOINT);
+
+if (
+  !process.env.REACT_APP_RASAENDPOINT
+) {
+  console.log('Please check environment file.');
+}
 
 export default class App extends Component {
   render() {

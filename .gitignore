@@ -23,6 +23,6 @@ yarn-debug.log*
 yarn-error.log*
 
 package-lock.json
-
+server/package-lock.json
 # maria db
 db
