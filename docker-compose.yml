@@ -19,7 +19,9 @@ services:
         volumes:
             - ./training-interface:/training-interface
         environment:
-        - RASA_ENDPOINT=${RASA_ENDPOINT}
+        # For some reason for react env variables to be imported properly
+        # you need the REACT_APP prefix & the name can't contain underscores.
+        - REACT_APP_RASAENDPOINT=${RASA_ENDPOINT}
         depends_on:
         - rasa
         - db
