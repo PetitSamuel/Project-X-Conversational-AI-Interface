@@ -4,6 +4,38 @@ import '../../../App.css';
 export class IntentLists extends Component {
 
 
+
+// list中存储的是User对象，显示所有User信息
+function displayList(list) {
+   for (list.front(); list.currPos() < list.length(); list.next()) {
+      if (list.getElement() instanceof User) {  // 使用 instanceof 判断对象类型
+         print(list.getElement()["name"] + ", " +
+               list.getElement()["intent"]);
+      }
+      else {
+         print(list.getElement());
+      }
+   }
+}
+
+//
+function checkOut(name, intent, filmList, UserList) {
+   if (intentList.contains(intent)) {
+      var c = new User(name, intent);
+      UserList.append(c);
+      filmList.remove(intent);
+   }
+   else {
+      print(intent + " is not available.");
+   }
+}
+
+
+
+
+
+
+
   function List() {  // 定义class List
    this.listSize = 0;
    this.pos = 0;
@@ -115,7 +147,7 @@ function getElement() {
 }
 
 
-
+//////////////////////////////////////////////////
 // 读取清单，保存在数组中
 function createArr(file) {
    var arr = read(file).split("\n");
@@ -131,42 +163,19 @@ for (var i = 0; i < intents.length; ++i) {
    intentList.append(intents[i]);
 }
 
-// 显示所有电影
+// 显示所有intent
 function displayList(list) {
    for (list.front(); list.currPos() < list.length(); list.next()) {
       print(list.getElement());
 }
 
-// 定义客户，假设客户可以借一部电影
-function Customer(name, intent) {
+// 定义user假设可以加intent
+function User(name, intent) {
    this.name = name;
    this.intent = intent;
 }
 
-// list中存储的是Customer对象，显示所有Customer信息
-function displayList(list) {
-   for (list.front(); list.currPos() < list.length(); list.next()) {
-      if (list.getElement() instanceof Customer) {  // 使用 instanceof 判断对象类型
-         print(list.getElement()["name"] + ", " +
-               list.getElement()["intent"]);
-      }
-      else {
-         print(list.getElement());
-      }
-   }
-}
 
-// 借阅电影
-function checkOut(name, intent, filmList, customerList) {
-   if (intentList.contains(intent)) {
-      var c = new Customer(name, intent);
-      customerList.append(c);
-      filmList.remove(intent);
-   }
-   else {
-      print(intent + " is not available.");
-   }
-}
 
   render() {
     return (
