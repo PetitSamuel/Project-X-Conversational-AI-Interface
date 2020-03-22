@@ -1,10 +1,11 @@
 import React from 'react';
-import { Switch, Redirect } from 'react-router-dom';
+import { Switch, Redirect, Route } from 'react-router-dom';
 
 import { RouteWithLayout } from './components';
 import { Main as MainLayout} from './layouts';
 
 import {
+  Auth as AuthV,
   Overview as OverviewV,    
   Assistants as AssistantsV,
   Analytics as AnalyticsV,
@@ -19,7 +20,17 @@ const Routes = () => {
       <Redirect
         exact
         from="/"
-        to="/overview"
+        to="/auth"
+      />
+      <Route path="/auth">
+            <AuthV/>
+        </Route>
+        
+      <RouteWithLayout
+        component={OverviewV}
+        exact
+        layout={MainLayout}
+        path="/overview"
       />
       <RouteWithLayout
         component={OverviewV}

@@ -11,7 +11,7 @@ class LoginForm extends Component {
     
     return (
   
-          <Form onSubmit={this.props.onSubmit}>
+          <Form className="login" onSubmit={this.props.onSubmit}>
             <div className = "form-group">
             <Jump>
               <img src = {logo} alt = "logo" className="logo"/>
