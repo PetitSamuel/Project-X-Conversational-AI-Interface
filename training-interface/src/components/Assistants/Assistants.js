@@ -24,7 +24,7 @@ class Assistants extends Component {
     e.preventDefault();
  
     const {Intent,Description} = this.state;
-    fetch('http://localhost:3000/assistants', {
+    fetch('http://localhost:8000/assistants', {
       method: 'post',
       body: JSON.stringify({
         Intent,
@@ -49,7 +49,9 @@ class Assistants extends Component {
     .catch((err) => console.error(err));
   }
 
-
+  //The form information is supposed to see by
+  //run 'json-server db.json -w -p 8000' in /server directory
+  //go 'http://localhost:8000/assistants'
   render () {
     
     return (
@@ -86,3 +88,4 @@ class Assistants extends Component {
   }
 }
 export default Assistants;
+
