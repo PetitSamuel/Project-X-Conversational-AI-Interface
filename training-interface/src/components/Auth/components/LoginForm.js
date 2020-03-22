@@ -3,17 +3,19 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Form from 'react-bootstrap/Form'
 import '../../../App.css';
 import logo from '../../../logos/logo.png';
-
+import Jump from 'react-reveal/Jump';
 
 class LoginForm extends Component {
-
+ 
   render () {
-
+    
     return (
-
+  
           <Form onSubmit={this.props.onSubmit}>
             <div className = "form-group">
-
+            <Jump>
+              <img src = {logo} alt = "logo" className="logo"/>
+            </Jump>
               <h6>Hit submit to reroute.</h6>
               <input type="username" required className="form-control" 
               name="username"
@@ -35,4 +37,4 @@ class LoginForm extends Component {
   }
 }
 
-export default LoginForm; 
+export default LoginForm;

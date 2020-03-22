@@ -1,6 +1,6 @@
 
 
-.tile{
+.title{
   font-size:'32px'; font-family: '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif'
 }
 
@@ -58,6 +58,32 @@
 }
 
 
+.login {
+	width: 400px;
+	margin: auto;
+	position: absolute;
+    top: 100px;
+}
+.logo {
+    width:100%;
+    padding-bottom: 30px;
+}
+.btn-primary {
+    background-color: #f36;
+    border-color: #f36;
+    margin: 30px;
+    width:30%;
+}
+
+.form-control:focus{
+    border-color:#f36;
+    box-shadow:0px 0px 0px 0.2rem rgba(255,51,102,0.25);
+}
+
+.btn-primary.focus, .btn-primary:focus {
+    box-shadow:0px 0px 0px 0.2rem rgba(255,51,102,0.25);
+}
+
 .main-logo{
   height: 100%;
 }
@@ -83,7 +109,7 @@
   margin-left: 25px;
   margin-top: 10px;
   padding: 10px;
-  height: 300px;
+  height: 400px;
   width:20%;
   font-size:1.2em !important;
   box-shadow: 0 .5rem 1rem rgba(19,190,177,.45)!important;
@@ -97,8 +123,8 @@
   border:1px solid #13beb1;
   margin:10px;
   padding:10px;
-  height:300px;
-  width:32%;
+  height:400px;
+  width:35%;
   font-size:1.2em !important;
   box-shadow: 0 .5rem 1rem rgba(19,190,177,.45)!important;
   border-radius: .25rem!important;
@@ -109,7 +135,7 @@
   margin-left: 25px;
   margin-top: 10px;
   padding: 0px;
-  height: 400px;
+  height: 300px;
   width:900px;
   font-size:1.2em !important;
   box-shadow: 0 .5rem 1rem rgba(19,190,177,.45)!important;
@@ -163,68 +189,3 @@
   font-weight: bold;
   line-height: 59px; }
 
-
-
-
-
-.tile4 {
-border: 1px solid #13beb1;
-margin-left: 25px;
-margin-top: 10px;
-max-width: 500px;
-height: 300px;
-width:200%;
-padding: 25px 15px 25px 10px;
-color: #3d5170;
-text-shadow: 1px 1px 1px #FFF;
-border:1px solid #13beb1;
-box-shadow: 0 .5rem 1rem rgba(19,190,177,.45)!important;
-border-radius: .25rem!important;
-}
-.tile4 label {
-display: block;
-margin: 0px;
-}
-.tile4 label>span {
-float: left;
-width: 20%;
-text-align: right;
-padding-right: 10px;
-margin-top: 10px;
-color: #3d5170;
-}
-.tile4 input[type="text"], .tile4 textarea{
-border: 1px solid #DADADA;
-
-height: 30px;
-margin-bottom: 16px;
-margin-right: 6px;
-margin-top: 2px;
-outline: 0 none;
-padding: 3px 3px 3px 5px;
-width: 70%;
-font-size: 12px;
-line-height:15px;
-box-shadow: inset 0px 1px 4px #ECECEC;
--moz-box-shadow: inset 0px 1px 4px #ECECEC;
--webkit-box-shadow: inset 0px 1px 4px #ECECEC;
-}
-.tile4 textarea{
-padding: 5px 3px 3px 5px;
-}
-.tile4 textarea{
-height:100px;
-}
-.tile4 .button {
-background: #13beb1;
-border: none;
-padding: 10px 25px 10px 25px;
-color: #FFF;
-box-shadow: 1px 1px 5px #B6B6B6;
-border-radius: 3px;
-text-shadow: 1px 1px 1px #9E3F3F;
-cursor: pointer;
-}
-.tile4 .button:hover {
-background: #13beb1
-}
