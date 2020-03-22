@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Row from 'react-bootstrap/Row';
 import '../../App.css';
+import { Jumbotron } from 'react-bootstrap';
 
 //Intents
 class Assistants extends Component {
@@ -56,7 +57,8 @@ class Assistants extends Component {
   render () {
     
     return (
-    <div>
+
+    <Jumbotron>
     <Row>
 
             <form class="tile4">
@@ -89,7 +91,7 @@ class Assistants extends Component {
       </div>
    
     </Row> 
-    </div>
+    </Jumbotron>
     )
   }
 }

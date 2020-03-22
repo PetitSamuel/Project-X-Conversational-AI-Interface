@@ -9,7 +9,7 @@ import {
   Overview as OverviewV,    
   Assistants as AssistantsV,
   Analytics as AnalyticsV,
-  Tools as ToolV,
+  Entities as EntitiesV,
   Dialog as DialogsV,
   
 } from './components';
@@ -51,10 +51,10 @@ const Routes = () => {
         path="/dialogs"
       />
       <RouteWithLayout
-        component={ToolV}
+        component={EntitiesV}
         exact
         layout={MainLayout}
-        path="/tools"
+        path="/entities"
       />
       <RouteWithLayout
         component={AnalyticsV}
