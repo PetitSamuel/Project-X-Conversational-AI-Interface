@@ -17,51 +17,46 @@ var intentsSchema = new Schema({
     expressions: [{ expression: String }],
 });
 
-const mongoose = require('./chatbot_db_connect');
-
-const { Schema } = mongoose;
-
 const entitiesSchema = new Schema(
-  {
-    name: {
-      type: String,
-      required: true,
-      unique: true,
-    },
-    synonyms: [
-      {
-        synonym_reference: { type: String, required: true },
-        list: [
-          {
+    {
+        name: {
             type: String,
-          },
+            required: true,
+            unique: true,
+        },
+        synonyms: [
+            {
+                synonym_reference: { type: String, required: true },
+                list: [
+                    {
+                        type: String,
+                    },
+                ],
+            },
         ],
-      },
-    ],
-    date: { type: Date, default: Date.now },
-  },
+        date: { type: Date, default: Date.now },
+    },
 );
 
-// create a schema
 const dialogSchema = new Schema({
     name: String,
     created_at: { type: Date, default: Date.now },
     updated_at: { type: Date, default: Date.now },
     intent: {
-      name: {
-        name: String,
-        uid: { type: String, unique: true },
-      },
-      responses: [
-        {
-          condition: String,
-          output: [String],
-          outputType: String,
-          uid: String,
+        name: {
+            name: String,
+            uid: { type: String, unique: true },
         },
-      ],
+        responses: [
+            {
+                condition: String,
+                output: [String],
+                outputType: String,
+                uid: String,
+            },
+        ],
     },
-  });
+});
 
 const EntitiesModel = mongoose.model('entities', entitiesSchema);
 const IntentsModel = mongoose.model('intents', intentsSchema);
