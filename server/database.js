@@ -14,7 +14,7 @@ var intentsSchema = new Schema({
         type: String,
         required: true,
     },
-    expressions: [{ expression: String }],
+    expressions: [String],
 });
 
 const entitiesSchema = new Schema(
@@ -62,25 +62,21 @@ const EntitiesModel = mongoose.model('entities', entitiesSchema);
 const IntentsModel = mongoose.model('intents', intentsSchema);
 const DialogModel = mongoose.model('dialog', dialogSchema);
 
-/*
-To insert into db: 
+function insertIntent(intent) {
+    // new instance
+    var newIntent = new IntentsModel(intent);
 
-// new instance
-var awesome_instance = new IntentsModel({
-    name: 'awesome', expressions: [
-        { expression: "hey" }, { expression: "another" }
-    ]
-});
+    // save to db
+    newIntent.save(function (err, data) {
+        if (err) return err;
+        return true;
+    });
+}
 
-// save to db
-awesome_instance.save(function (err, data) {
-    if (err) return console.error(err);
-    console.log("cool");
-});
-*/
 module.exports = {
     db: db,
     EntitiesModel: EntitiesModel,
     IntentsModel: IntentsModel,
     DialogModel: DialogModel,
+    insertIntent: insertIntent,
 }

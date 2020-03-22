@@ -14,9 +14,20 @@ if (!process.env.SERVER_PORT ||
 
 const app = express()
 app.use(cors());
+app.use(express.json());
 
 app.get('/', (req, res) => {
     res.status(200).send("Hey there");
 });
-console.log(db);
+
+app.post('/api/intent', (req, res) => {
+    let params = req.body;
+    let insert = db.insertIntent(params);
+    if (!params.name || !params.expressions || params.expressions.length === 0) {
+        res.status(400).send({ "error": "Request needs a name (string), and an array with at least one expression." })
+    }
+    // 200 if success, if error then error message returned
+    res.json({ response: insert });
+});
+
 app.listen(process.env.SERVER_PORT, () => console.log('Server started on ' + process.env.SERVER_PORT));
