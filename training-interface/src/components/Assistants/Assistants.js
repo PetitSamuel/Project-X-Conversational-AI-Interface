@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Row from 'react-bootstrap/Row';
 import '../../App.css';
 
+//Intents
 class Assistants extends Component {
 
   constructor(props) {
@@ -24,7 +25,7 @@ class Assistants extends Component {
     e.preventDefault();
  
     const {Intent,Description} = this.state;
-    fetch('http://localhost:8000/assistants', {
+    fetch('http://localhost:8000/intents', {
       method: 'post',
       body: JSON.stringify({
         Intent,
@@ -51,28 +52,33 @@ class Assistants extends Component {
 
   //The form information is supposed to see by
   //run 'json-server db.json -w -p 8000' in /server directory
-  //go 'http://localhost:8000/assistants'
+  //go 'http://localhost:8000/intents'
   render () {
     
     return (
     <div>
     <Row>
 
-        <div className = "tile2">
-        <h4 style ={{paddingBottom: "6px"}}>Add New Intent</h4>
-            <form>
-            <label>Intent:</label>
-            <input type="text" />
-            <br />
-            <label>Description:</label>
-            <input type="text" />
-            
-            <br />
-            <input type="submit" value="submit" />
-          </form>
+            <form class="tile4">
+              <h4 style ={{paddingBottom: "6px"}}>Add New Intent</h4>
+              <label>
+              <span>Intent :</span>
+              <input id="Intent" type="text" name="Intent" />
+              </label>
 
-        </div>
+              <label>
+              <span>Description :</span>
+              <textarea id="Description" name="Description"></textarea>
+              </label>
+              
+              <label>
+              <span>&nbsp;</span>
+              <input type="submit" class="button" value="submit" />
+              </label>
+            </form>
 
+            <div className = "tile2">
+            </div>
     </Row>
 
     <Row>
