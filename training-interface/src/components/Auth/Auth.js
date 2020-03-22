@@ -10,7 +10,8 @@ class Auth extends Component {
     this.state = {
       email: '',
       password: '',
-      submit: false
+      submit: false,
+      redirect: null,
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -19,6 +20,7 @@ class Auth extends Component {
 
 
   async handleSubmit(event) {
+    this.setState({redirect: "/overview"})
     // We will have some auth happening here later, for now reroute on submit.
     this.setState({submit: true})
   }
@@ -38,9 +40,13 @@ class Auth extends Component {
 
 
   render() {
-    return (
+    if (this.state.submit) {
+      return <Redirect to={this.state.redirect} />
+    }
+    return(
       <LoginForm onChange={this.handleChanges} onSubmit={this.handleSubmit}/>
-    );
+    )
+  
   }
 }
 

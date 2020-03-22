@@ -16,7 +16,7 @@ class LoginForm extends Component {
             <Jump>
               <img src = {logo} alt = "logo" className="logo"/>
             </Jump>
-              <h6>Hit submit to reroute.</h6>
+              <h6>Enter anything.</h6>
               <input type="username" required className="form-control" 
               name="username"
               placeholder="Username" 
