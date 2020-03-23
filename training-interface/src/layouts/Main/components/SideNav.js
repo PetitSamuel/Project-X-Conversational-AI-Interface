@@ -4,6 +4,7 @@ import { MdDashboard } from "react-icons/md";
 import { MdChatBubbleOutline } from "react-icons/md";
 import {FaRobot} from 'react-icons/fa';
 import {IoMdAnalytics} from 'react-icons/io';
+import {AiOutlineQuestion} from 'react-icons/ai';
 import {IoMdLink} from 'react-icons/io';
 //Lol needs fixed
 import '../../../App.css';
@@ -20,7 +21,10 @@ render () {
           <NavLink to="/overview" activeClassName="nav-link active" className = "nav-link"><h5><MdDashboard /> Overview</h5></NavLink>
       </li>
       <li className="nav-item">
-          <NavLink to="/assistants" activeClassName="nav-link active" className = "nav-link"><h5><FaRobot /> Intents</h5></NavLink>
+          <NavLink to="/assistants" activeClassName="nav-link active" className = "nav-link"><h5><FaRobot /> Assistants</h5></NavLink>
+      </li>
+      <li className="nav-item">
+          <NavLink to="/intents" activeClassName="nav-link active" className = "nav-link"><h5><AiOutlineQuestion /> Intents</h5></NavLink>
       </li>
       <li className="nav-item">
           <NavLink to="/entities" activeClassName="nav-link active" className = "nav-link"><h5><IoMdLink /> Entities</h5></NavLink>

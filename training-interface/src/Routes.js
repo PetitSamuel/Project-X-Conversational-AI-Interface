@@ -8,6 +8,7 @@ import {
   Auth as AuthV,
   Overview as OverviewV,    
   Assistants as AssistantsV,
+  Intents as IntentsV,
   Analytics as AnalyticsV,
   Entities as EntitiesV,
   Dialog as DialogsV,
@@ -39,10 +40,10 @@ const Routes = () => {
         path="/overview"
       />
       <RouteWithLayout
-        component={AssistantsV}
+        component={IntentsV}
         exact
         layout={MainLayout}
-        path="/assistants"
+        path="/intents"
       />
       <RouteWithLayout
         component={DialogsV}
@@ -55,6 +56,12 @@ const Routes = () => {
         exact
         layout={MainLayout}
         path="/entities"
+      />
+      <RouteWithLayout
+        component={AssistantsV}
+        exact
+        layout={MainLayout}
+        path="/assistants"
       />
       <RouteWithLayout
         component={AnalyticsV}
