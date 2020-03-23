@@ -18,10 +18,10 @@ app.use(cors());
 app.use(express.json());
 
 app.get('/', (req, res) => {
-    res.status(200).send("Hey there");
+    res.status(200).send("Hey");
 });
 
-app.post('/api/intent', (req, res) => {
+app.post('/api/intents', (req, res) => {
     let params = req.body;
     let insert = db.insertIntent(params);
     if (!params.name || !params.expressions || params.expressions.length === 0) {
@@ -29,6 +29,13 @@ app.post('/api/intent', (req, res) => {
     }
     // 200 if success, if error then error message returned
     res.json({ response: insert });
+});
+
+app.get('/api/intents', async (req, res) => {
+    db.IntentsModel.find({}, function (err, data) {
+        if (err) res.status(400).send({"error" : true, "message": err});
+        res.json(data);
+      });
 });
 
 app.post('/api/convert-csv-to-md', (req, res) => {

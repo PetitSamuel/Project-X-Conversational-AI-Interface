@@ -65,7 +65,6 @@ const DialogModel = mongoose.model('dialog', dialogSchema);
 function insertIntent(intent) {
     // new instance
     var newIntent = new IntentsModel(intent);
-
     // save to db
     newIntent.save(function (err, data) {
         if (err) return err;

@@ -1,7 +1,7 @@
 FROM node:12.6.0
 ADD . /server
 WORKDIR /server
-COPY . /server
+# COPY . /server
 RUN npm install 
 
 ## LIFE SAVER SCRIPT - waits for mongoose to be fully up & running
