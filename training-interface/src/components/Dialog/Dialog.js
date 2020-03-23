@@ -63,6 +63,27 @@ class Dialog extends Component {
         </Col>
 
         
+        <Col lg={7}>
+        
+        <Jumbotron fluid style = {{width:"50%" ,padding:"20px"}}>
+          <Form>
+          <h4 style ={{paddingBottom: "6px"}}>Create New Dialog</h4>
+
+            <Form.Group controlId="Customer">
+              <Form.Label>Customer</Form.Label>
+              <Form.Control as="textarea" rows="3" placeholder="Customer's words" />
+            </Form.Group>
+            <button type="submit" className="btn btn-primary">Add</button>
+            
+            <Form.Group controlId="Robot">
+              <Form.Label>Robot</Form.Label>
+              <Form.Control as="textarea" rows="3" placeholder="Robot's words" />
+            </Form.Group>
+
+            <button type="submit" className="btn btn-primary">Add</button>
+          </Form>
+        </Jumbotron>
+        </Col>
 
         </Row>
 
