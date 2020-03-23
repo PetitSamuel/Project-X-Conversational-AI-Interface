@@ -121,7 +121,7 @@ class Entities extends Component {
 
             <Form.Group controlId="Entity">
               <Form.Label>Entity</Form.Label>
-              <Form.Control type="text" placeholder="Enter email" />
+              <Form.Control type="text" placeholder="Enter an entity" />
             </Form.Group>
 
             <Form.Group controlId="Value">
