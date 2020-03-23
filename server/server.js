@@ -1,7 +1,8 @@
 const express = require('express')
 const cors = require('cors')
-const db = require("./database")
-const converter = require("./converter")
+var router = express.Router();
+const api_controller = require("./Routes/api")
+var db_api_controller = require('./Routes/db_api');
 require('dotenv').config()
 
 if (!process.env.SERVER_PORT ||
@@ -21,31 +22,21 @@ app.get('/', (req, res) => {
     res.status(200).send("Hey");
 });
 
-app.post('/api/intents', (req, res) => {
-    let params = req.body;
-    let insert = db.insertIntent(params);
-    if (!params.name || !params.expressions || params.expressions.length === 0) {
-        res.status(400).send({ "error": "Request needs a name (string), and an array with at least one expression." })
-    }
-    // 200 if success, if error then error message returned
-    res.json({ response: insert });
-});
+router.post('/api/convert-csv-to-md', api_controller.convert_csv_to_md);
 
-app.get('/api/intents', async (req, res) => {
-    db.IntentsModel.find({}, function (err, data) {
-        if (err) res.status(400).send({"error" : true, "message": err});
-        res.json(data);
-      });
-});
+router.post('/api/intents', db_api_controller.post_intents);
+router.post('/api/entities', db_api_controller.post_entities);
+router.post('/api/dialogs', db_api_controller.post_dialogs);
 
-app.post('/api/convert-csv-to-md', (req, res) => {
-    let params = req.body;
-    if(!params.csv) {
-        res.status(400).send({ "error": "Request needs csv parameter. The value must be stringified." })
-    }
+router.get('/api/intents', db_api_controller.get_intents);
+router.get('/api/entities', db_api_controller.get_entities);
+router.get('/api/dialogs', db_api_controller.get_dialogs);
 
-    let mdString = converter.convertCsvToMd(params.csv)
-    res.json({ response: mdString });
+app.use('/', router);
+
+// all other endpoints are 404s
+app.use(function(req, res, next){
+    res.status(404).send('Not found');
 });
 
 app.listen(process.env.SERVER_PORT, () => console.log('Server started on ' + process.env.SERVER_PORT));
