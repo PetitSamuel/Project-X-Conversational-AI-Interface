@@ -1,40 +1,43 @@
 import React, { Component } from 'react';
 import Row from 'react-bootstrap/Row';
 import '../../App.css';
-
+import { render } from 'react-dom';
+import PieChart from 'react-simple-pie-chart';
 
 class Analytics extends Component {
+  
 
   render () {
     
     return (
-    <div>
-    <Row>
+      <div  >
+      //I've tried every method I can get, but cannot reduce size
+      //This is the very basic version of pie chart
+      //You can find a better one here: https://apexcharts.com/react-chart-demos/pie-charts/simple-pie-chart/
+      //but I can't let it works
+        <PieChart 
+          slices={[
+          {
 
-        <div className ="tile1">
-            <h3 style ={{paddingBottom: "6px"}}>Analytics</h3>
-          <div className = "stat-box">
-            
-            
-          </div>   
-        </div>
-
-
-        <div className = "tile2">
-      
-        </div>
-
-      </Row>
-
-      <Row>
-
-      <div className = "tile3">
-       
+            color: '#3d5170',
+            value: 10,
+          },
+          {
+            color: '#13beb1',
+            value: 20,
+          },
+          {
+            color: '#e1e5ab',
+            value: 38,
+          },
+          {
+            color: '#11bae0',
+            value: 32,
+          },
+        ]}
+      />
       </div>
-   
-      </Row> 
-      </div>
-    )
+    );
   }
 }
 export default Analytics;
