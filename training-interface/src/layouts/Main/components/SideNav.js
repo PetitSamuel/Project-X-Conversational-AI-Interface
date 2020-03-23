@@ -6,6 +6,7 @@ import {FaRobot} from 'react-icons/fa';
 import {IoMdAnalytics} from 'react-icons/io';
 import {AiOutlineQuestion} from 'react-icons/ai';
 import {IoMdLink} from 'react-icons/io';
+import { MdFileUpload } from "react-icons/md";
 //Lol needs fixed
 import '../../../App.css';
 
@@ -22,6 +23,9 @@ render () {
       </li>
       <li className="nav-item">
           <NavLink to="/assistants" activeClassName="nav-link active" className = "nav-link"><h5><FaRobot /> Assistants</h5></NavLink>
+      </li>
+      <li className="nav-item">
+          <NavLink to="/upload" activeClassName="nav-link active" className = "nav-link"><h5><MdFileUpload /> Upload</h5></NavLink>
       </li>
       <li className="nav-item">
           <NavLink to="/intents" activeClassName="nav-link active" className = "nav-link"><h5><AiOutlineQuestion /> Intents</h5></NavLink>

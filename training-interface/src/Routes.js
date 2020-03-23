@@ -8,6 +8,7 @@ import {
   Auth as AuthV,
   Overview as OverviewV,    
   Assistants as AssistantsV,
+  Upload as UploadV,
   Intents as IntentsV,
   Analytics as AnalyticsV,
   Entities as EntitiesV,
@@ -38,6 +39,12 @@ const Routes = () => {
         exact
         layout={MainLayout}
         path="/overview"
+      />
+      <RouteWithLayout
+        component={UploadV}
+        exact
+        layout={MainLayout}
+        path="/upload"
       />
       <RouteWithLayout
         component={IntentsV}
