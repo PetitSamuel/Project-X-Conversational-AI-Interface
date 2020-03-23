@@ -18,7 +18,6 @@ class Entities extends Component {
     };
   }
 
-//Desperate times
   generateTable(){
     let x = ["time", "scheduled_flight", "day", "flight", "hour", "passenger", "user", "delay", "ticket", "boarding", "departure", "arrival", "delay", "complaint", "these", "are", "just", "test","test",
     "test","test","test"];
@@ -27,8 +26,8 @@ class Entities extends Component {
     for(var i=0; i<x.length; i++) {
       var element = (
         <div class="custom-control custom-checkbox">
-          <input type="checkbox" class="custom-control-input" id="defaultUnchecked"></input>
-          <label class="custom-control-label" for="defaultUnchecked">{x[i]}</label>
+          <input type="checkbox" class="custom-control-input" id={x[i]}></input>
+          <label class="custom-control-label" for={x[i]}>{x[i]}</label>
         </div>
       )
       arr.push(element);
