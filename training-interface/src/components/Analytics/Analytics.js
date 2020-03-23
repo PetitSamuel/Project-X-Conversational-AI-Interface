@@ -6,15 +6,15 @@ import PieChart from 'react-simple-pie-chart';
 
 class Analytics extends Component {
   
-
+//I've tried every method I can get, but cannot reduce size
+//This is the very basic version of pie chart
+//You can find a better one here: https://apexcharts.com/react-chart-demos/pie-charts/simple-pie-chart/
+//but I can't let it works
   render () {
     
     return (
       <div  >
-      //I've tried every method I can get, but cannot reduce size
-      //This is the very basic version of pie chart
-      //You can find a better one here: https://apexcharts.com/react-chart-demos/pie-charts/simple-pie-chart/
-      //but I can't let it works
+      
         <PieChart 
           slices={[
           {
