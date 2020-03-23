@@ -1,6 +1,7 @@
 const express = require('express')
 const cors = require('cors')
 const db = require("./database")
+const converter = require("./converter")
 require('dotenv').config()
 
 if (!process.env.SERVER_PORT ||
@@ -28,6 +29,16 @@ app.post('/api/intent', (req, res) => {
     }
     // 200 if success, if error then error message returned
     res.json({ response: insert });
+});
+
+app.post('/api/convert-csv-to-md', (req, res) => {
+    let params = req.body;
+    if(!params.csv) {
+        res.status(400).send({ "error": "Request needs csv parameter. The value must be stringified." })
+    }
+
+    let mdString = converter.convertCsvToMd(params.csv)
+    res.json({ response: mdString });
 });
 
 app.listen(process.env.SERVER_PORT, () => console.log('Server started on ' + process.env.SERVER_PORT));
