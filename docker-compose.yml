@@ -1,11 +1,10 @@
 version: '3.7'
-#Remove comments when we need rasa or a database in the system 
 services:
     rasa:
         image: rasa/rasa:latest-full
         container_name: rasa
         ports:
-        - "5005:5005"
+        - "${RASA_PORT}:${RASA_PORT}"
         volumes:
         - "./rasa-app-data/models:/app/models"
         - "./rasa-app-data/logs:/app/logs"
@@ -15,7 +14,7 @@ services:
         restart: on-failure
         container_name: project-x-frontend
         ports:
-            - "3000:3000"
+            - "${REACT_APP_PORT}:${REACT_APP_PORT}"
         volumes:
             - ./training-interface:/training-interface
         environment:
@@ -31,7 +30,7 @@ services:
         restart: always
         container_name: server
         ports:
-            - "5000:5000"
+            - "${SERVER_PORT}:${SERVER_PORT}"
         volumes:
             - ./server:/server
         environment:
@@ -39,7 +38,7 @@ services:
             - SERVER_PORT=${SERVER_PORT}
             - MONGO_CONNECTION_STRING=${MONGO_CONNECTION_STRING}
             # script to wait for mongo to be fully up & running
-            - WAIT_HOSTS=db:27017
+            - WAIT_HOSTS=db:${MONGO_PORT}
         depends_on:
             - db
             - rasa
@@ -48,6 +47,8 @@ services:
         image: mongo:latest
         volumes:
             - $DATABASE_DATA:/$DATABASE_DATA
+            # Put the script to initialise the database in the right directory withing mongo container
+            # It will execute it on initialisation
             - ./init-db.js:/docker-entrypoint-initdb.d/init-db.js:ro
         environment:
             # to connect from cmd line run (read / write user) for root access use root user

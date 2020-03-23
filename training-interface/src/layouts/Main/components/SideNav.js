@@ -20,7 +20,7 @@ render () {
           <NavLink to="/overview" activeClassName="nav-link active" className = "nav-link"><h5><MdDashboard /> Overview</h5></NavLink>
       </li>
       <li className="nav-item">
-          <NavLink to="/assistants" activeClassName="nav-link active" className = "nav-link"><h5><FaRobot /> Assistants</h5></NavLink>
+          <NavLink to="/assistants" activeClassName="nav-link active" className = "nav-link"><h5><FaRobot /> Intents</h5></NavLink>
       </li>
       <li className="nav-item">
           <NavLink to="/entities" activeClassName="nav-link active" className = "nav-link"><h5><IoMdLink /> Entities</h5></NavLink>
