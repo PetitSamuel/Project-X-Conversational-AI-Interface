@@ -17,6 +17,7 @@ if (!process.env.SERVER_PORT ||
 const app = express()
 app.use(cors());
 app.use(express.json());
+app.use(require("body-parser").json())
 
 app.get('/', (req, res) => {
     res.status(200).send("Hey");

@@ -7,7 +7,7 @@ const db = require("../database")
 exports.post_intents = function(req, res) {
     let params = req.body;
     if (!params.name || !params.expressions || params.expressions.length === 0) {
-        res.status(400).send({ "error": "Request needs a name (string), and an array with at least one expression." })
+        res.status(400).json({ "error": "Request needs a name (string), and an array with at least one expression." })
     }
     let insert = db.insertIntent(params);
     res.json({ response: insert });
@@ -15,7 +15,7 @@ exports.post_intents = function(req, res) {
 
 exports.get_intents = function(req, res) {
     db.IntentsModel.find({}, function (err, data) {
-        if (err) res.status(400).send({"error" : true, "message": err});
+        if (err) res.status(400).json({"error" : true, "message": err});
         res.json(data);
       });
 }
@@ -23,7 +23,7 @@ exports.get_intents = function(req, res) {
 exports.post_entities = function(req, res) {
     let params = req.body;
     if (!params.name || !params.synonyms || params.synonyms.length === 0) {
-        res.status(400).send({ "error": "Request needs a name (string), and an array with at least one synonym." })
+        res.status(400).json({ "error": "Request needs a name (string), and an array with at least one synonym." })
     }
     let insert = db.insertEntity(params);
     res.json({ response: insert });
@@ -31,7 +31,7 @@ exports.post_entities = function(req, res) {
 
 exports.get_entities = function(req, res) {
     db.EntitiesModel.find({}, function (err, data) {
-        if (err) res.status(400).send({"error" : true, "message": err});
+        if (err) res.status(400).json({"error" : true, "message": err});
         res.json(data);
       });
 };
@@ -39,7 +39,7 @@ exports.get_entities = function(req, res) {
 exports.post_dialogs = function(req, res) {
     let params = req.body;
     if (!params.name || !params.intent || !params.intent.name || !params.intent.responses || params.intent.responses.length === 0) {
-        res.status(400).send({ "error": "Request needs a name (string), and an intent which contains a name & an array of responses." })
+        res.status(400).json({ "error": "Request needs a name (string), and an intent which contains a name & an array of responses." })
     }
     let insert = db.insertDialog(params);
     res.json({ response: insert });
@@ -47,7 +47,7 @@ exports.post_dialogs = function(req, res) {
 
 exports.get_dialogs = function(req, res) {
     db.DialogModel.find({}, function (err, data) {
-        if (err) res.status(400).send({"error" : true, "message": err});
+        if (err) res.status(400).json({"error" : true, "message": err});
         res.json(data);
       });
 };
