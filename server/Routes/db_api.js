@@ -321,6 +321,7 @@ exports.remove_entity = async function (req, res) {
     res.status(200).json({ deleted_count: status.deletedCount, db_ok: status.ok === 1 });
 };
 
+/*
 exports.post_dialogs = function (req, res) {
     let params = req.body;
     if (!params.name || !params.intent || !params.intent.name || !params.intent.responses || params.intent.responses.length === 0) {
@@ -336,3 +337,4 @@ exports.get_dialogs = function (req, res) {
         res.json(data);
     });
 };
+*/
