@@ -30,7 +30,7 @@ exports.post_intents = async function (req, res) {
         res.status(400).json({ "error": true, "message": "Request needs a name field." });
         return;
     }
-    if (!params.expressions || params.expressions.length === 0) {
+    if (!params.expressions || !Array.isArray(params.expressions)) {
         res.status(400).json({ "error": true, "message": "Request needs an expressions field. (Array of Strings)." });
         return;
     }
