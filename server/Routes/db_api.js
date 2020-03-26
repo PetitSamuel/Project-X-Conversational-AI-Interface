@@ -6,10 +6,20 @@ const db = require("../database")
 
 /*
     Post request. Params required :
-        name : String (note: Name has to be stringified)
+        name: String (note: Name has to be stringified)
         expressions: String array.
         Response: 200 on success, body includes the new intent as a JSON object.
-        Example :
+        Example request:
+            POST Request to /api/intents
+            Headers: Accept: application/json
+            Body:
+                {
+                    "name": "test_name",
+                    "expressions": [
+                        "hello"
+                    ]
+                }
+        Example response:
         {
             "expressions": [
                 "hello"
@@ -51,7 +61,7 @@ exports.post_intents = async function (req, res) {
         return;
     }
 
-    // if intent is found, overwritte expressions to currently existing intent.
+    // if intent is found, overwritte expressions to the ones from the request.
     currentIntent.expressions = params.expressions;
     const updatedIntent = await currentIntent.save();
     if (updatedIntent !== currentIntent) {
@@ -64,20 +74,23 @@ exports.post_intents = async function (req, res) {
 /*
     Returns list of all intents.
     If an intent name is specified only return that one.
-    Return type is an array of json objects:
-    Example:
-    [
-        {
-            "expressions": [
-                "test",
-                "same",
-                "hey"
-            ],
-            "_id": "5e7c9e7fbbad2f0008825fda",
-            "name": "sam",
-            "__v": 2
-        }
-    ]
+    Return type is an array of json objects.
+    Example request:
+        GET Request to /api/intents/<optional intent name>
+        Headers: Accept: application/json
+    Example Response:
+        [
+            {
+                "expressions": [
+                    "test",
+                    "same",
+                    "hey"
+                ],
+                "_id": "5e7c9e7fbbad2f0008825fda",
+                "name": "sam",
+                "__v": 2
+            }
+        ]
 */
 exports.get_intents = async function (req, res) {
     let dbQueryParam = {};
@@ -86,8 +99,8 @@ exports.get_intents = async function (req, res) {
         dbQueryParam = { 'name': reqParams.name };
     }
     try {
-        let posts = await db.IntentsModel.find(dbQueryParam);
-        res.status(200).json(posts);
+        let intents = await db.IntentsModel.find(dbQueryParam);
+        res.status(200).json(intents);
         return;
     } catch (err) {
         res.status(400).send({ "error": true, "message": err });
@@ -96,13 +109,17 @@ exports.get_intents = async function (req, res) {
 }
 
 /*
-    Remove entire intent by name specified in endpoint (ie a DELETE request to /api/intents/MyName will delete MyName & all of its expressions.)
-    Returns the following json object: 
-    {
-    "deleted_count": 0,
-    "db_ok": true
-    }
-    deleted count is 0 if name is not found in db. 1 if the delete was successful.
+    Remove entire intent by name specified in endpoint.
+    (ie a DELETE request to /api/intents/MyName will delete MyName & all of its expressions.)
+    Example request:
+        DELETE request to /api/intents/MyName
+        Headers: Accept: application/json
+    Example response:
+        {
+            "deleted_count": 0,
+            "db_ok": true
+        }
+    To Note: deleted count is 0 if name is not found in db. 1 if the delete was successful.
 */
 exports.remove_intent = async function (req, res) {
     let params = req.params;
@@ -114,25 +131,194 @@ exports.remove_intent = async function (req, res) {
         res.status(400).json({ "error": true, "message": "name is a required parameter." })
         return;
     }
-
     let status = await db.IntentsModel.deleteOne({ 'name': params.name });
     res.status(200).json({ deleted_count: status.deletedCount, db_ok: status.ok === 1 });
 };
 
-exports.post_entities = function (req, res) {
+/*
+    Post request. Params required :
+        name: String (note: Name has to be stringified)
+        synonyms: Array of the following object:
+            {
+                synonym_reference: String
+                list: [String]
+            }
+        Response: 200 on success, body includes the new intent as a JSON object.
+        Example request:
+            POST Request to /api/entities
+            Headers: Accept: application/json
+            Body:
+                {
+                    "name": "test_name",
+                    "synonyms": [
+                        {
+                            "synonym_reference": "reference 1",
+                            "list": ["first item", "second item"]
+                        },
+                        {
+                            "synonym_reference": "reference 2",
+                            "list": ["third item", "fourth item"]
+                        }
+                    ]
+                }
+        Example response:
+            {
+                "_id": "5e7cc9d3cebcc70008da1d46",
+                "name": "test_name",
+                "synonyms": [
+                    {
+                        "list": [
+                            "first item",
+                            "second item"
+                        ],
+                        "_id": "5e7cc9d3cebcc70008da1d47",
+                        "synonym_reference": "reference 1"
+                    },
+                    {
+                        "list": [
+                            "third item",
+                            "fourth item"
+                        ],
+                        "_id": "5e7cc9d3cebcc70008da1d48",
+                        "synonym_reference": "reference 2"
+                    }
+                ],
+                "date": "2020-03-26T15:27:15.507Z",
+                "__v": 0
+            }
+    Note: to delete specific synonyms or items from a list of an intent,
+    send a post request with the new details for that entity as it will overwrite the unwanted ones.
+*/
+exports.post_entities = async function (req, res) {
     let params = req.body;
     if (!params.name || !params.synonyms || params.synonyms.length === 0) {
         res.status(400).json({ "error": "Request needs a name (string), and an array with at least one synonym." })
     }
-    let insert = db.insertEntity(params);
-    res.json({ response: insert });
+    if (!params) {
+        res.status(400).json({ "error": true, "message": "empty request body." });
+        return;
+    }
+    if (!params.name) {
+        res.status(400).json({ "error": true, "message": "Request needs a name field." });
+        return;
+    }
+    if (!params.synonyms || !Array.isArray(params.synonyms)) {
+        res.status(400).json({ "error": true, "message": "Request needs a synonyms field. (Array)." });
+        return;
+    }
+
+    // make sure synonyms have the correct structure
+    for (const current of params.synonyms) {
+        if (!current.synonym_reference || !current.list || !Array.isArray(current.list)) {
+            res.status(400).json({ "error": true, "message": "Each synonym needs the following structure : {synonym_reference: String, list: [String]}." });
+        }
+    }
+
+    let currentEntity = await db.EntitiesModel.findOne({ 'name': params.name });
+    // If no intent found, make a new one
+    if (!currentEntity) {
+        let entity = new db.EntitiesModel({
+            name: params.name,
+            synonyms: params.synonyms,
+        });
+
+        const newEntity = await entity.save();
+        if (newEntity !== entity) {
+            res.status(400).json({ "error": true, "message": "Error when saving to db.", "details": newEntity });
+            return;
+        }
+        res.status(200).json(newEntity);
+        return;
+    }
+
+    // if entity is found, overwritte synonyms to the ones from the request.
+    currentEntity.synonyms = params.synonyms;
+    const updatedEntity = await currentEntity.save();
+    if (updatedEntity !== currentEntity) {
+        res.status(400).json({ "error": true, "message": "Error when saving to db.", "details": updatedEntity });
+        return;
+    }
+    res.status(200).json(updatedEntity);
 };
 
-exports.get_entities = function (req, res) {
-    db.EntitiesModel.find({}, function (err, data) {
-        if (err) res.status(400).json({ "error": true, "message": err });
-        res.json(data);
-    });
+
+/*
+    Returns list of all entities.
+    If an intent name is specified in endpoint only return that one.
+    Return type is an array of json objects.
+    Endpoint : /api/entities/<optional entity name>.
+    Example request:
+        GET Request to /api/entities/<optional intent name>
+        Headers: Accept: application/json
+    Example response:
+        [
+            {
+                "_id": "5e7cc9d3cebcc70008da1d46",
+                "name": "test_name",
+                "synonyms": [
+                    {
+                        "list": [
+                            "first item",
+                            "second item"
+                        ],
+                        "_id": "5e7cc9d3cebcc70008da1d47",
+                        "synonym_reference": "reference 1"
+                    },
+                    {
+                        "list": [
+                            "third item",
+                            "fourth item"
+                        ],
+                        "_id": "5e7cc9d3cebcc70008da1d48",
+                        "synonym_reference": "reference 2"
+                    }
+                ],
+                "date": "2020-03-26T15:27:15.507Z",
+                "__v": 0
+            }
+        ]
+*/
+exports.get_entities = async function (req, res) {
+    let dbQueryParam = {};
+    let reqParams = req.params;
+    if (reqParams.name) {
+        dbQueryParam = { 'name': reqParams.name };
+    }
+    try {
+        let posts = await db.EntitiesModel.find(dbQueryParam);
+        res.status(200).json(posts);
+        return;
+    } catch (err) {
+        res.status(400).send({ "error": true, "message": err });
+        return;
+    }
+}
+
+/*
+    Remove entire entity by name specified in endpoint.
+    (ie a DELETE request to /api/entity/MyName will delete MyName & all of its synonyms.)
+    Example request:
+        DELETE request to /api/entities/MyName
+        Headers: Accept: application/json
+    Example response:
+        {
+            "deleted_count": 0,
+            "db_ok": true
+        }
+    To note: Deleted count is 0 if name is not found in db. 1 if the delete was successful.
+*/
+exports.remove_entity = async function (req, res) {
+    let params = req.params;
+    if (!params) {
+        res.status(400).json({ "error": true, "message": "Invalid request: no parameter specified in endpoint." })
+        return;
+    }
+    if (!params.name) {
+        res.status(400).json({ "error": true, "message": "Invalid request: no entity name specified in endpoint." })
+        return;
+    }
+    let status = await db.EntitiesModel.deleteOne({ 'name': params.name });
+    res.status(200).json({ deleted_count: status.deletedCount, db_ok: status.ok === 1 });
 };
 
 exports.post_dialogs = function (req, res) {

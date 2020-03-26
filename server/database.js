@@ -17,6 +17,7 @@ var intentsSchema = new Schema({
     name: {
         type: String,
         required: true,
+        unique: true,
     },
     expressions: [String],
 });
