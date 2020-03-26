@@ -101,7 +101,4 @@ module.exports = {
     EntitiesModel: EntitiesModel,
     IntentsModel: IntentsModel,
     DialogModel: DialogModel,
-    insertIntent: insertIntent,
-    insertEntity: insertEntity,
-    insertDialog: insertDialog,
 }

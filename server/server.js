@@ -30,8 +30,11 @@ router.post('/api/entities', db_api_controller.post_entities);
 router.post('/api/dialogs', db_api_controller.post_dialogs);
 
 router.get('/api/intents', db_api_controller.get_intents);
+router.get('/api/intents/:name', db_api_controller.get_intents);
 router.get('/api/entities', db_api_controller.get_entities);
 router.get('/api/dialogs', db_api_controller.get_dialogs);
+
+router.delete('/api/intents/:name', db_api_controller.remove_intent);
 
 app.use('/', router);
 
