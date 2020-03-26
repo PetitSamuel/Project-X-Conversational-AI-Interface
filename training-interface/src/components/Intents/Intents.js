@@ -14,9 +14,13 @@ class Intents extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      Intent: '',
-      Description: ''
+      intent: '',
+      string: '',
+      arrString: []
     };
+
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   generateTable(){
@@ -39,43 +43,49 @@ class Intents extends Component {
     return arr;
   }
 
-
-
-  handleValueChange(field, value, type='string') {
-    if(type === 'number'){
-      value = + value;
-    }
-    this.setState({
-      [field]: value
-    });
+  addString(e){
+    e.preventDefault();
+    var element = (
+      <Form.Group controlId="Intent.Description">
+        <Form.Label>Description</Form.Label>
+          <Form.Control as="textarea" rows="3" placeholder="String" className="form-control" 
+          name="string"
+          value={this.state.string}
+          onChange={this.handleChange}/>
+        </Form.Group>
+    )
+    return element;
   }
+
+
+    handleChange(event) {
+      if(event.target.name==="intent"){
+        this.setState({intent: event.target.value});
+      }
+      else if(event.target.name === "string"){
+        this.setState({string: event.target.value});
+      }
+      else{
+        console.log('Trying to update:',event.target.name,'to',event.target.value);
+      }
+    }  
+
+
   handleSubmit (e) {
     e.preventDefault();
- 
-    const {Intent,Description} = this.state;
-    fetch('http://localhost:8000/intents', {
-      method: 'post',
+    var arr = this.state.arrString;
+    arr.push(this.state.string);
+    this.setState({arrString: arr});
+    fetch('http://localhost:5000/api/intents', {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json"
+      },
       body: JSON.stringify({
-        Intent,
-          Description
-      }),
-        headers: {
-       'Content-Type': 'application/json'
-        }
-    })
-    .then((res) => res.json())
-    .then((res) => {
-      if (res.id) {
-        alert('add successfully');
-        this.setState({
-          Intent: '',
-          Description: ''
-        });
-      } else {
-        alert('fail to add');
-      }
-    })
-    .catch((err) => console.error(err));
+        name: this.state.intent,
+        expressions: this.state.arrString,
+      })
+    });
   }
 
 
@@ -85,10 +95,8 @@ class Intents extends Component {
   //go 'http://localhost:8000/intents'
   render () {
 
-
     var list = this.generateTable();
     return (
-
     <div>
       <InputGroup style = {{padding:"20px"}}>
         <InputGroup.Prepend>
@@ -101,8 +109,7 @@ class Intents extends Component {
             aria-describedby="btnGroupAddon"
           />
       </InputGroup>
-      
-      
+
       <Row style = {{padding:"20px"}}>
         <Col lg={5}>
           <Container fluid className="tile-glow">
@@ -113,25 +120,31 @@ class Intents extends Component {
             <button type="#" className="btn btn-primary">Remove</button>
           </Container>
         </Col>
-      
-        
+
         <Col lg={7}>
-        
         <Jumbotron fluid style = {{width:"50%" ,padding:"20px"}}>
-          <Form>
-          <h4 style ={{paddingBottom: "6px"}}>Create New Intent</h4>
 
-            <Form.Group controlId="Intent">
-              <Form.Label>Intent</Form.Label>
-              <Form.Control type="text" placeholder="Enter an intent" />
-            </Form.Group>
+          <Form onSubmit={this.handleSubmit}>
+            <h4 style ={{paddingBottom: "6px"}}>Create New Intent</h4>
 
-            <Form.Group controlId="Intent.Description">
-              <Form.Label>Description</Form.Label>
-              <Form.Control as="textarea" rows="3" placeholder="Description" />
-            </Form.Group>
+              <Form.Group controlId="Intent">
+                <Form.Label>Intent</Form.Label>
+                <Form.Control type="text" placeholder="Enter an intent" 
+                name="intent"
+                value={this.state.intent}
+                onChange={this.handleChange}/>
+              </Form.Group>
 
-            <button type="submit" className="btn btn-primary">Add</button>
+
+              <Form.Group controlId="Intent.Description">
+                <Form.Label>Description</Form.Label>
+                <Form.Control as="textarea" rows="3" placeholder="String" className="form-control" 
+                name="string"
+                value={this.state.string}
+                onChange={this.handleChange}/>
+              </Form.Group>
+              <button onClick={this.handleSubmit} type="submit" className="btn btn-primary">Add</button>
+
           </Form>
         </Jumbotron>
         </Col>

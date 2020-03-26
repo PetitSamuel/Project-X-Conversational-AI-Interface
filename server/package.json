@@ -9,7 +9,6 @@
     "body-parser": "latest",
     "mongoose": "latest"
   },
-  
   "description": "This is a simple express backend.",
   "main": "server.js",
   "devDependencies": {},
