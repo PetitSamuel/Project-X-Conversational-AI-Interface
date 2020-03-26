@@ -17,6 +17,7 @@ var intentsSchema = new Schema({
     name: {
         type: String,
         required: true,
+        unique: true,
     },
     expressions: [String],
 });
@@ -101,7 +102,4 @@ module.exports = {
     EntitiesModel: EntitiesModel,
     IntentsModel: IntentsModel,
     DialogModel: DialogModel,
-    insertIntent: insertIntent,
-    insertEntity: insertEntity,
-    insertDialog: insertDialog,
 }
