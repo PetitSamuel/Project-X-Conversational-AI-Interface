@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import Row from 'react-bootstrap/Row';
 import '../../App.css';
-import { render } from 'react-dom';
 import PieChart from 'react-simple-pie-chart';
 
 class Analytics extends Component {
