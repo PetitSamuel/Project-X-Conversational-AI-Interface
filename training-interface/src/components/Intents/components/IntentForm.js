@@ -60,13 +60,12 @@ const IntentForm = () => {
                 <Form.Label>Intent</Form.Label>
                 <Form.Control type="text" placeholder="Enter an intent" 
                 name="intent"
-                
                 onChange={handleNameChange}
                 />
             </Form.Group>
             <Form.Group controlId="Intent.Description">
                 <Form.Label>Expressions
-                <Button variant="secondary" size="sm" style={{marginLeft:"5px"}} value="Add another expression"
+                <Button variant="secondary" size="sm" style={{marginLeft:"5px",lineHeight: "1.3" , borderRadius: "15px"}} value="Add another expression"
                 onClick={addIntent}>
                 + 
               </Button></Form.Label>
