@@ -26,3 +26,6 @@ package-lock.json
 server/package-lock.json
 # maria db
 db
+
+# ignore server file uploads
+server/uploads
