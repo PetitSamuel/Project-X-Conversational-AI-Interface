@@ -1,5 +1,7 @@
-function convertCsvToMd(input) {
-    let inputArray = input.split("\n");
+const fs = require('fs');
+
+function convertCsvToMd(fileInput, outputFile) {
+    var inputArray = fs.readFileSync(fileInput).toString().split("\n"); //splits CSV by each line
     let titlePos = determineFormatting(inputArray[0])
     let titlesWritten = [];
     let finalString = '';
@@ -20,8 +22,10 @@ function convertCsvToMd(input) {
             finalString += arrayToLine(title, textArray);
         }
     }
-
-    return finalString;
+    fs.writeFile(outputFile, finalString, function(err){
+        if (err) return false;
+      }) // Clear file on launch
+    return true;
 }
 
 function determineFormatting(firstLine) {

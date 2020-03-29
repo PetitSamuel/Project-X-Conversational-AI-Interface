@@ -1,7 +1,11 @@
 const express = require('express')
 const cors = require('cors')
+var multer = require('multer')
+const path = require('path');
+var fs = require('fs');
+const converter = require("./converter")
+
 var router = express.Router();
-const api_controller = require("./Routes/api")
 var db_api_controller = require('./Routes/db_api');
 require('dotenv').config()
 
@@ -19,11 +23,47 @@ app.use(cors());
 app.use(express.json());
 app.use(require("body-parser").json())
 
+var storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        if (!fs.existsSync(path.join(__dirname + '/uploads'))) {
+            fs.mkdirSync(path.join(__dirname + '/uploads'));
+        }
+        cb(null, path.join(__dirname + '/uploads'));
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + '-' + file.originalname)
+    }
+});
+var upload = multer({ storage: storage }).single('file')
+
+app.post('/upload', function (req, res) {
+    console.log("hello");
+    upload(req, res, function (err) {
+        if (err) {
+            return res.json({"error": true, "message": JSON.stringify(err)});
+        }
+        console.log(req.filename);
+        let outputFilePath = req.file.path.substring(0, req.file.path.length-3) + "md";
+        let outputFileName = req.file.path.substring(0, req.file.filename.length-3) + "md";
+
+        let val = converter.convertCsvToMd(req.file.path,outputFilePath);
+        if(val === false) {
+            res.status(400).json({ "error": "an error occured during file conversion."});
+        }
+        res.status(200).json({ "filename": outputFileName});
+    });
+});
+app.get('/download/:filename', function(req, res){
+    const file = path.join(__dirname + '/uploads') + "/" +req.params.filename;
+    if(!file) {
+        res.status(400).json({"error": "couldn't find file in server."});
+        return;
+    }
+    res.download(file); // Set disposition and send it.
+  });
 app.get('/', (req, res) => {
     res.status(200).send("Hey");
 });
-
-router.post('/api/convert-csv-to-md', api_controller.convert_csv_to_md);
 
 router.post('/api/intents', db_api_controller.post_intents);
 router.post('/api/entities', db_api_controller.post_entities);
@@ -41,7 +81,7 @@ router.delete('/api/entities/:name', db_api_controller.remove_entity);
 app.use('/', router);
 
 // all other endpoints are 404s
-app.use(function(req, res, next){
+app.use(function (req, res, next) {
     res.status(404).send('Not found');
 });
 
