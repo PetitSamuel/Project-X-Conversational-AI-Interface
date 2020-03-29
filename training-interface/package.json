@@ -10,6 +10,7 @@
     "axios": "^0.19.2",
     "bootstrap": "^4.4.1",
     "dotenv": "^8.2.0",
+    "js-file-download": "^0.4.10",
     "now": "^17.0.3",
     "react": "^16.12.0",
     "react-bootstrap": "^1.0.0-beta.16",
@@ -19,7 +20,9 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.3.1",
     "react-simple-pie-chart": "^0.5.0",
-    "react-svg-donuts": "^1.0.0"
+    "react-svg-donuts": "^1.0.0",
+    "react-toastify": "^5.5.0",
+    "reactstrap": "^8.4.1"
   },
   "scripts": {
     "start": "react-scripts start",

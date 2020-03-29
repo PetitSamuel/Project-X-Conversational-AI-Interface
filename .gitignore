@@ -28,4 +28,4 @@ server/package-lock.json
 db
 
 # ignore server file uploads
-server/uploaded_files
+server/Api/uploaded_files/

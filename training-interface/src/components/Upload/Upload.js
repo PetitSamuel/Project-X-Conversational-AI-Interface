@@ -3,13 +3,15 @@ import axios from 'axios';
 import { Progress } from 'reactstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+const FileDownload = require('js-file-download');
 
 class Upload extends Component {
   constructor(props) {
     super(props);
     this.state = {
       selectedFile: null,
-      loaded: 0
+      loaded: 0,
+      downloadUrl: null,
     }
   }
 
@@ -31,10 +33,20 @@ class Upload extends Component {
       .then(res => {
         toast.success('Success: file uploaded and converted to md!');
         console.log("trigger file download to : " + res.data.filename);
+        this.setState({
+          downloadUrl: 'http://localhost:5000/api/download-md/' + res.data.filename,
+        });
       })
       .catch(err => {
         toast.error('Error: file upload failed.');
         console.log(JSON.stringify(err));
+      });
+  }
+
+  onDownload = () => {
+    axios.get(this.state.downloadUrl)
+      .then((response) => {
+        FileDownload(response.data, 'converted-from-csv.md');
       });
   }
 
@@ -52,7 +64,7 @@ class Upload extends Component {
               <Progress max="100" color="success" value={this.state.loaded} >{Math.round(this.state.loaded, 2)}%</Progress>
             </div>
             <button type="button" class="btn btn-success btn-block" onClick={this.onClickHandler}>Upload</button>
-
+            <button type="button" class="btn btn-success btn-block" disabled={!this.state.downloadUrl} onClick={this.onDownload}>download</button>
           </div>
         </div>
       </div>
