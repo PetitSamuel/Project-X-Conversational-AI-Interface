@@ -37,12 +37,10 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage }).single('file')
 
 app.post('/upload', function (req, res) {
-    console.log("hello");
     upload(req, res, function (err) {
         if (err) {
             return res.json({"error": true, "message": JSON.stringify(err)});
         }
-        console.log(req.filename);
         let outputFilePath = req.file.path.substring(0, req.file.path.length-3) + "md";
         let outputFileName = req.file.path.substring(0, req.file.filename.length-3) + "md";
 
