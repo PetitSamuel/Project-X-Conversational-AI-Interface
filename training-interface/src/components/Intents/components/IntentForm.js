@@ -53,6 +53,11 @@ const IntentForm = () => {
         window.location.reload(true);
     }
 
+    const handleEdit = (e) => {
+        e.preventDefault();
+        window.location.reload(true);
+    }
+
     return (
         <Form onSubmit={handleSubmit}>
             <h4 style ={{paddingBottom: "6px"}}>Create New Intent</h4>
