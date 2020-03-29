@@ -4,8 +4,8 @@ import Col from 'react-bootstrap/Col';
 import InputGroup from 'react-bootstrap/InputGroup'
 import FormControl from 'react-bootstrap/FormControl'
 import Jumbotron from 'react-bootstrap/Jumbotron'
-import Form from 'react-bootstrap/Form'
 import Container from 'react-bootstrap/Container'
+import IntentForm from './components/IntentForm'
 import '../../App.css';
 
 const axios = require('axios').default; 
@@ -21,45 +21,11 @@ class Intents extends Component {
       addExpressions:[],
     };
 
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleChange = this.handleChange.bind(this);
     this.generateTable = this.generateTable.bind(this);
   }
   
   componentDidMount(){
     this.generateTable();
-  }
-
-  handleChange(event) {
-    if(event.target.name==="intent"){
-      this.setState({intent: event.target.value});
-    }
-    else if(event.target.name === "string"){
-      this.setState({string: event.target.value});
-    }
-    else{
-      console.log('Trying to update:',event.target.name,'to',event.target.value);
-    }
-  }  
-
-
-  handleSubmit (e) {
-    e.preventDefault();
-    var arr = this.state.addExpressions;
-    arr.push(this.state.string);
-    this.setState({addExpressions: arr});
-
-    axios.post('http://localhost:5000/api/intents', {
-      name: this.state.intent,
-      expressions: this.state.addExpressions,
-    })
-    .then(function (response) {
-      console.log(response);
-      window.location.reload(true);
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
   }
 
   getData(){
@@ -132,24 +98,7 @@ class Intents extends Component {
 
         <Col lg={7}>
           <Jumbotron fluid style = {{width:"50%" ,padding:"20px"}}>
-            <Form onSubmit={this.handleSubmit}>
-              <h4 style ={{paddingBottom: "6px"}}>Create New Intent</h4>
-                <Form.Group controlId="Intent">
-                  <Form.Label>Intent</Form.Label>
-                  <Form.Control type="text" placeholder="Enter an intent" 
-                  name="intent"
-                  value={this.state.intent}
-                  onChange={this.handleChange}/>
-                </Form.Group>
-                <Form.Group controlId="Intent.Description">
-                  <Form.Label>Description</Form.Label>
-                  <Form.Control as="textarea" rows="3" placeholder="String" className="form-control" 
-                  name="string"
-                  value={this.state.string}
-                  onChange={this.handleChange}/>
-                </Form.Group>
-                <button onClick={this.handleSubmit} type="submit" className="btn btn-primary">Add</button>
-            </Form>
+           <IntentForm/>
           </Jumbotron>
         </Col>
       </Row>
