@@ -6,7 +6,7 @@ import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 const axios = require('axios').default; 
 
-const IntentForm = () => {
+const IntentForm = ({ edit, editState }) => {
 
     const [nameState, setNameState] = useState({
         name: '',
@@ -60,14 +60,23 @@ const IntentForm = () => {
 
     return (
         <Form onSubmit={handleSubmit}>
-            <h4 style ={{paddingBottom: "6px"}}>Create New Intent</h4>
-            <Form.Group controlId="Intent">
-                <Form.Label>Intent</Form.Label>
-                <Form.Control type="text" placeholder="Enter an intent" 
-                name="intent"
-                onChange={handleNameChange}
-                />
-            </Form.Group>
+
+         
+        {edit
+            ?<h4 style ={{paddingBottom: "6px"}}>Edit Intent</h4>
+            :<h4 style ={{paddingBottom: "6px"}}>Create New Intent</h4>
+        }
+
+        <Form.Group controlId="Intent">
+        <Form.Label>Intent</Form.Label>
+        <Form.Control type="text" placeholder="Enter an intent" 
+        name="intent"
+        onChange={handleNameChange}
+        />
+        </Form.Group>
+       
+            
+        
             <Form.Group controlId="Intent.Description">
                 <Form.Label>Expressions
                 <Button variant="secondary" size="sm" style={{marginLeft:"5px",lineHeight: "1.3" , borderRadius: "15px"}} value="Add another expression"

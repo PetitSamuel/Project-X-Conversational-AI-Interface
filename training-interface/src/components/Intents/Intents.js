@@ -21,11 +21,14 @@ class Intents extends Component {
       arrString: null,
       addExpressions:[],
       removeList:[],
+      edit : false,
+      editState : null,
     };
 
     this.generateTable = this.generateTable.bind(this);
     this.handleCheck = this.handleCheck.bind(this);
     this.handleRemove = this.handleRemove.bind(this);
+    this.handleEdit = this.handleEdit.bind(this);
   }
   
   componentDidMount(){
@@ -45,9 +48,13 @@ class Intents extends Component {
       });
       return getDatas;
   }
+  handleEdit(intent){
+   this.setState({edit: true});
+   this.setState({editState: intent});
+   console.log('Now state is', this.state.edit)
+  }
 
   handleCheck(e){
-
     var inList = false;
     var arr = this.state.removeList;
     for(var i = 0; i< arr.length; i++){
@@ -86,7 +93,8 @@ class Intents extends Component {
     });
   }
  
- 
+  //When the user clicks edit the corresponding intent object is passed in here
+
   generateTable(){
     this.getData()
       .then((response) => { 
@@ -96,11 +104,17 @@ class Intents extends Component {
         
         for (var i=0; i<x.length; i++) {
           var element = (
+            <div>
             <div className="custom-control custom-checkbox">
               <input type="checkbox" className="custom-control-input" id={x[i]._id} onClick={this.handleCheck} name={x[i].name}></input>
               <label className="custom-control-label" for={x[i]._id}> {x[i].name} </label>
-              
+              <Button variant="outline-warning" size="sm" style={{align: "right", marginLeft:"10px",lineHeight: "1.1" , borderRadius: "10px"}} 
+                onClick={()=>{this.handleEdit(x[i])}}>
+                + 
+              </Button>
             </div>
+            
+          </div>
           )
           arr.push(element);
         }
@@ -141,10 +155,12 @@ class Intents extends Component {
             <Button onClick = {this.handleRemove} variant="outline-danger" style={{ float:"right", width:"20%", margin:"30px"}}>Remove</Button>
           </Container>
         </Col>
-
+        
         <Col lg={7}>
           <Jumbotron fluid style = {{width:"50%" ,padding:"20px"}}>
-           <IntentForm/>
+            {/*This intent form is for creating intents*/}
+            
+             <IntentForm edit={this.state.edit} editState={this.state.edit}/>
           </Jumbotron>
         </Col>
       </Row>
