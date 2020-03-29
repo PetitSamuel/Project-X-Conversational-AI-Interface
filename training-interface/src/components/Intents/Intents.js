@@ -54,6 +54,7 @@ class Intents extends Component {
             <div className="custom-control custom-checkbox">
               <input type="checkbox" className="custom-control-input" id={x[i]._id}></input>
               <label className="custom-control-label" for={x[i]._id}> {x[i].name} </label>
+              
             </div>
           )
           arr.push(element);

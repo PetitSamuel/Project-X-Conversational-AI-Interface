@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import IntentInputs from './IntentInputs.js';
 import Form from 'react-bootstrap/Form'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 const axios = require('axios').default; 
 
@@ -33,7 +35,6 @@ const IntentForm = () => {
     
     const handleSubmit = (e) => {
         e.preventDefault();
-    
         axios.post('http://localhost:5000/api/intents', {
           name: nameState.name,
           expressions: expressionState,
@@ -46,6 +47,11 @@ const IntentForm = () => {
           console.log(error);
         });
       }
+    
+    const handleCancel = (e) => {
+        e.preventDefault();
+        window.location.reload(true);
+    }
 
     return (
         <Form onSubmit={handleSubmit}>
@@ -77,7 +83,10 @@ const IntentForm = () => {
                     />
                 ))
             }
-            <button onClick={handleSubmit} type="submit" className="btn btn-primary">Add</button>
+            <Row>
+            <Col><button onClick={handleSubmit} type="submit" className="btn btn-primary">Add</button></Col>
+            <Col> <Button onClick = {handleCancel} variant="outline-danger" style={{float:"right", margin:"30px"}}>Cancel</Button></Col>
+            </Row>
         </Form>
         
     );
