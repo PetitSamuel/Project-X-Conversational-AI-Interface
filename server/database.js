@@ -20,6 +20,7 @@ var intentsSchema = new Schema({
         unique: true,
     },
     expressions: [String],
+    last_updated: { type: Date, default: Date.now },
 });
 
 const entitiesSchema = new Schema(
@@ -39,7 +40,7 @@ const entitiesSchema = new Schema(
                 ],
             },
         ],
-        date: { type: Date, default: Date.now },
+        last_updated: { type: Date, default: Date.now },
     },
 );
 

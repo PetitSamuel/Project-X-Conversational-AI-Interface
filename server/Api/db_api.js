@@ -63,6 +63,7 @@ exports.post_intents = async function (req, res) {
 
     // if intent is found, overwritte expressions to the ones from the request.
     currentIntent.expressions = params.expressions;
+    currentIntent.last_updated = Date.now();
     const updatedIntent = await currentIntent.save();
     if (updatedIntent !== currentIntent) {
         res.status(400).json({ "error": true, "message": "Error when saving to db.", "details": updatedIntent });
@@ -233,6 +234,7 @@ exports.post_entities = async function (req, res) {
 
     // if entity is found, overwritte synonyms to the ones from the request.
     currentEntity.synonyms = params.synonyms;
+    currentEntity.last_updated = Date.now();
     const updatedEntity = await currentEntity.save();
     if (updatedEntity !== currentEntity) {
         res.status(400).json({ "error": true, "message": "Error when saving to db.", "details": updatedEntity });
