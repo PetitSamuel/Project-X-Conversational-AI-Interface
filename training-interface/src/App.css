@@ -134,12 +134,12 @@
   border-radius: .25rem!important;
 }
 
-.tile3{
-  border: 1px solid #13beb1;
+.punch-tile{
+  border:1px solid #13beb1;
   margin-left: 25px;
   margin-top: 10px;
-  padding: 0px;
-  height: 300px;
+  padding: 10px;
+  height: 500px;
   width:900px;
   font-size:1.2em !important;
   box-shadow: 0 .5rem 1rem rgba(19,190,177,.45)!important;
@@ -193,3 +193,28 @@
   font-weight: bold;
   line-height: 59px; }
 
+  .pie-container{
+    text-align: center;
+ 
+}
+.section:hover {
+    transform: scale(1.04);
+  }
+.section {
+    transition: all 1s;
+
+  }
+
+  .svg{
+      overflow:visible;
+  }
+
+  .legend{
+      z-index:1000;
+      position:absolute;
+      font-size:14px;
+  }
+
+  .languageGraph{
+      overflow:visible;
+  }

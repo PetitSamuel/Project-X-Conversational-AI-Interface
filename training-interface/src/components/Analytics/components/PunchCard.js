@@ -3,23 +3,23 @@ import { scaleLinear, scaleBand } from 'd3-scale';
 import AxisSettings from './Axis.js';
 import GeneratePunchCard from './GeneratePunchCard.js';
 import { extent } from 'd3-array';
+const axios = require('axios').default; 
 
-class CreatePunchCard extends Component {
+class PunchCard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-		data: null
+		data: [],
     }
   }
   
-  
   componentWillMount(){
-	  this.setState({data: this.props.data});
+     this.setState({data: this.props.data})
   }
-
+ 
 
   render() {
-	const { data } = this.state;
+    const { data } = this.state;
     const parentWidth = 800;
 
     const margins = {
@@ -55,4 +55,4 @@ class CreatePunchCard extends Component {
     );
   }
 }
-export default CreatePunchCard;
+export default PunchCard;
