@@ -1,41 +1,44 @@
 import React, { Component } from 'react';
 import '../../App.css';
-import PieChart from 'react-simple-pie-chart';
+
+const axios = require('axios').default; 
 
 class Analytics extends Component {
-  
-//I've tried every method I can get, but cannot reduce size
-//This is the very basic version of pie chart
-//You can find a better one here: https://apexcharts.com/react-chart-demos/pie-charts/simple-pie-chart/
-//but I can't let it works
-  render () {
-    
-    return (
-      <div  >
-      
-        <PieChart 
-          slices={[
-          {
+  constructor(props) {
+    super(props);
+    this.state = {
+      intentPunchData: '',
+      entityPunchData: '',
+    };
 
-            color: '#3d5170',
-            value: 10,
-          },
-          {
-            color: '#13beb1',
-            value: 20,
-          },
-          {
-            color: '#e1e5ab',
-            value: 38,
-          },
-          {
-            color: '#11bae0',
-            value: 32,
-          },
-        ]}
-      />
-      </div>
-    );
+    this.getData = this.getData.bind(this);
+  }
+  
+  componentDidMount(){
+    this.getData();
+  }
+
+  getData(){
+     axios.get('http://localhost:5000/api/intents-analytics')
+      .then((response) => { 
+        this.setState({intentPunchData: response});
+        console.log(this.state.intentPunchData);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+  
+
+  
+  //The form information is supposed to see by
+  //run 'json-server db.json -w -p 8000' in /server directory
+  //go 'http://localhost:8000/intents'
+  render () {
+    return (
+    <div></div>
+    )
   }
 }
 export default Analytics;
+
