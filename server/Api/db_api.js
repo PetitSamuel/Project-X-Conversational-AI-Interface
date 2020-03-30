@@ -419,7 +419,7 @@ function dayOfWeekAsString(dayIndex) {
 
 exports.generate_intents = async function (req, res) {
     const MINS_IN_WEEK = 10080;
-    for (let i = 0; i < 1000; i++) {
+    for (let i = 0; i < 100; i++) {
         let name = uuid();
         var date1 = new Date();
         date1.setMinutes(date1.getMinutes() - getRandomInt(MINS_IN_WEEK));
@@ -440,7 +440,7 @@ exports.generate_intents = async function (req, res) {
 
 exports.generate_entities = async function (req, res) {
     const MINS_IN_WEEK = 10080;
-    for (let i = 0; i < 1000; i++) {
+    for (let i = 0; i < 100; i++) {
         let name = uuid();
         var date1 = new Date();
         date1.setMinutes(date1.getMinutes() - getRandomInt(MINS_IN_WEEK));
