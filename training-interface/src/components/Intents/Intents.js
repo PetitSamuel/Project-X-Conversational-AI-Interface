@@ -79,7 +79,7 @@ class Intents extends Component {
         </InputGroup.Prepend>
           <FormControl
             type="text"
-            placeholder="Search for an entity"
+            placeholder="Search for an intent"
             aria-label="Input group example"
             aria-describedby="btnGroupAddon"
           />

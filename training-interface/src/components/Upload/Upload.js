@@ -1,3 +1,6 @@
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container'
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Progress } from 'reactstrap';
@@ -52,21 +55,33 @@ class Upload extends Component {
 
   render() {
     return (
-      <div class="container">
+      
+      <div style = {{padding:"40px"}}>
+      <Container fluid className="tile-glow" style={{width:"50%" ,padding:"30px"}}>
+      <Col lg={{ span: 10, offset: 2 }} >
+      
+      <div class="container" style ={{height:"70%", padding:"3px"}}>
         <div class="row">
-          <div class="offset-md-3 col-md-6">
+          <div class="offset-md-0 col-md-10">
+
             <div class="form-group files">
-              <label>Upload Your File </label>
-              <input type="file" class="form-control" multiple onChange={this.onChangeHandler} />
+              <h4><label>Upload Your File </label></h4>
+              <input type="file" class="form-control-upload" multiple onChange={this.onChangeHandler} />
             </div>
+
             <div class="form-group">
               <ToastContainer />
               <Progress max="100" color="success" value={this.state.loaded} >{Math.round(this.state.loaded, 2)}%</Progress>
             </div>
+
             <button type="button" class="btn btn-success btn-block" onClick={this.onClickHandler}>Upload</button>
             <button type="button" class="btn btn-success btn-block" disabled={!this.state.downloadUrl} onClick={this.onDownload}>download</button>
           </div>
         </div>
+      </div>
+      
+      </Col>
+      </Container>
       </div>
     );
   }
