@@ -26,7 +26,9 @@ app.get('/', (req, res) => {
 });
 
 router.post('/intents', db_api_controller.post_intents);
+router.post('/intents-generation', db_api_controller.generate_intents);
 router.post('/entities', db_api_controller.post_entities);
+router.post('/entities-generation', db_api_controller.generate_entities);
 // router.post('/api/dialogs', db_api_controller.post_dialogs);
 router.post('/upload-csv', converter_api_controller.post_upload_csv);
 

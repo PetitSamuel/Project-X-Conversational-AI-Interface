@@ -391,18 +391,22 @@ function fromDbToFromattedAnalytics(data) {
     };
     for (const date of data) {
         let parsedDate = new Date(date.last_updated);
-        if (values[dayOfWeekAsString(parsedDate.getDay() - 1)][parsedDate.getHours().toString()] == null) {
-            values[dayOfWeekAsString(parsedDate.getDay() - 1)][parsedDate.getHours().toString()] = 1;
+        let dayAsString = dayOfWeekAsString(parsedDate.getDay());
+        let hoursAsString = parsedDate.getHours().toString();
+        if (values[dayAsString][hoursAsString] == null) {
+            values[dayAsString][hoursAsString] = 1;
         } else {
-            values[dayOfWeekAsString(parsedDate.getDay() - 1)][parsedDate.getHours().toString()]++;
+            values[dayAsString][hoursAsString]++;
         }
     }
+
     let arr = [];
+
     for (const item in values) {
         for (const child in values[item]) {
             arr.push({
                 name: item,
-                value: child,
+                value: parseInt(child),
                 count: values[item][child],
             })
         }
@@ -410,5 +414,65 @@ function fromDbToFromattedAnalytics(data) {
     return arr;
 }
 function dayOfWeekAsString(dayIndex) {
-    return ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"][dayIndex];
+    return ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][dayIndex];
+}
+
+exports.generate_intents = async function (req, res) {
+    const MINS_IN_WEEK = 10080;
+    for (let i = 0; i < 1000; i++) {
+        let name = uuid();
+        var date1 = new Date();
+        date1.setMinutes(date1.getMinutes() - getRandomInt(MINS_IN_WEEK));
+        let intent = new db.IntentsModel({
+            name: name,
+            expressions: [uuid(), uuid(), uuid()],
+            last_updated: date1,
+        });
+        const newIntent = await intent.save();
+        if (newIntent !== intent) {
+            res.status(400).json({ "error": true, "message": "Error when saving to db.", "details": newIntent });
+            return;
+        }
+    }
+
+    res.status(200).json({ "message": "populated db with intents" });
+}
+
+exports.generate_entities = async function (req, res) {
+    const MINS_IN_WEEK = 10080;
+    for (let i = 0; i < 1000; i++) {
+        let name = uuid();
+        var date1 = new Date();
+        date1.setMinutes(date1.getMinutes() - getRandomInt(MINS_IN_WEEK));
+        let intent = new db.IntentsModel({
+            name: name,
+            expressions: [uuid(), uuid(), uuid()],
+            last_updated: date1,
+        });
+        let entity = new db.EntitiesModel({
+            name: uuid(),
+            synonyms: {
+                synonym_reference: uuid(),
+                list: [
+                    uuid(), uuid(), uuid(),
+                ],
+            },
+            last_updated: date1,
+        });
+        const newEntity = await entity.save();
+        if (newEntity !== entity) {
+            res.status(400).json({ "error": true, "message": "Error when saving to db.", "details": newEntity });
+            return;
+        }
+    }
+
+    res.status(200).json({ "message": "populated db with entities" });
+}
+
+function uuid() {
+    // generate a short uuid
+    return '_' + Math.random().toString(36).substr(2, 15);
+};
+function getRandomInt(max) {
+    return Math.floor(Math.random() * Math.floor(max));
 }

@@ -19,7 +19,7 @@ class Upload extends Component {
   }
 
   onChangeHandler = event => {
-    if (event.target.files[0].type !== 'text/csv') {
+    if (event.target.files[0].type !== 'text/csv' && event.target.files[0].type !== "application/vnd.ms-excel") {
       toast.error("Only CSV file formats are accepted!")
     } else {
       this.setState({
