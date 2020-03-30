@@ -1,14 +1,14 @@
 version: '3.7'
 services:
-    rasa:
-        image: rasa/rasa:latest-full
-        container_name: rasa
-        ports:
-        - "${RASA_PORT}:${RASA_PORT}"
-        volumes:
-        - "./rasa-app-data/models:/app/models"
-        - "./rasa-app-data/logs:/app/logs"
-        command: "run --enable-api --debug"
+#    rasa:
+#        image: rasa/rasa:latest-full
+#        container_name: rasa
+#        ports:
+#        - "${RASA_PORT}:${RASA_PORT}"
+#        volumes:
+#        - "./rasa-app-data/models:/app/models"
+#        - "./rasa-app-data/logs:/app/logs"
+#        command: "run --enable-api --debug"
     project-x-frontend:
         build: ./training-interface
         restart: on-failure
@@ -22,7 +22,7 @@ services:
         # you need the REACT_APP prefix & the name can't contain underscores.
         - REACT_APP_RASAENDPOINT=${RASA_ENDPOINT}
         depends_on:
-        - rasa
+#        - rasa
         - server
         restart: on-failure
     server:
@@ -42,7 +42,7 @@ services:
             - WAIT_HOSTS=db:${MONGO_PORT}
         depends_on:
             - db
-            - rasa
+#            - rasa
         restart: on-failure
     db:
         image: mongo:latest
