@@ -53,35 +53,43 @@ class Upload extends Component {
       });
   }
 
+  isEndingCsv() {
+    if (!this.state.selectedFile) {
+      return false;
+    }
+    let name = this.state.selectedFile.name;
+    return name.slice(name.length - 3) === "csv";
+  }
+
+
   render() {
     return (
-      
-      <div style = {{padding:"40px"}}>
-      <Container fluid className="tile-glow" style={{width:"50%" ,padding:"30px"}}>
-      <Col lg={{ span: 10, offset: 2 }} >
-      
-      <div class="container" style ={{height:"70%", padding:"3px"}}>
-        <div class="row">
-          <div class="offset-md-0 col-md-10">
+      <div style={{ padding: "40px" }}>
+        <Container fluid className="tile-glow" style={{ width: "50%", padding: "30px" }}>
+          <Col lg={{ span: 10, offset: 2 }} >
 
-            <div class="form-group files">
-              <h4><label>Upload Your File </label></h4>
-              <input type="file" class="form-control-upload" multiple onChange={this.onChangeHandler} />
+            <div class="container" style={{ height: "70%", padding: "3px" }}>
+              <div class="row">
+                <div class="offset-md-0 col-md-10">
+
+                  <div class="form-group files">
+                    <h4><label>Upload Your File </label></h4>
+                    <input type="file" class="form-control" accept=".csv" onChange={this.onChangeHandler} />
+                  </div>
+
+                  <div class="form-group">
+                    <ToastContainer />
+                    <Progress max="100" color="success" value={this.state.loaded} >{Math.round(this.state.loaded, 2)}%</Progress>
+                  </div>
+
+                  <button type="button" class="btn btn-success btn-block" onClick={this.onClickHandler} disabled={!this.state.selectedFile || !this.isEndingCsv()}>Upload</button>
+                  <button type="button" class="btn btn-success btn-block" disabled={!this.state.downloadUrl} onClick={this.onDownload}>download</button>
+                </div>
+              </div>
             </div>
 
-            <div class="form-group">
-              <ToastContainer />
-              <Progress max="100" color="success" value={this.state.loaded} >{Math.round(this.state.loaded, 2)}%</Progress>
-            </div>
-
-            <button type="button" class="btn btn-success btn-block" onClick={this.onClickHandler}>Upload</button>
-            <button type="button" class="btn btn-success btn-block" disabled={!this.state.downloadUrl} onClick={this.onDownload}>download</button>
-          </div>
-        </div>
-      </div>
-      
-      </Col>
-      </Container>
+          </Col>
+        </Container>
       </div>
     );
   }
