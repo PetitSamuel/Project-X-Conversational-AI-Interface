@@ -340,3 +340,75 @@ exports.get_dialogs = function (req, res) {
     });
 };
 */
+
+exports.get_intents_analytics = async function (req, res) {
+    var lastWeek = new Date();
+    lastWeek.setDate(lastWeek.getDate() - 7);
+    let dbQueryParam = { "last_updated": { "$gt": lastWeek, "$lt": Date.now() } };
+    try {
+        var dates = await db.IntentsModel.find(dbQueryParam).select('last_updated');
+    } catch (err) {
+        res.status(400).send({ "error": true, "message": err });
+        return;
+    }
+    res.status(200).json(fromDbToFromattedAnalytics(dates));
+    return;
+}
+
+exports.get_entities_analytics = async function (req, res) {
+    var lastWeek = new Date();
+    lastWeek.setDate(lastWeek.getDate() - 7);
+    let dbQueryParam = { "last_updated": { "$gt": lastWeek, "$lt": Date.now() } };
+    try {
+        var dates = await db.EntitiesModel.find(dbQueryParam).select('last_updated');
+    } catch (err) {
+        res.status(400).send({ "error": true, "message": err });
+        return;
+    }
+    res.status(200).json(fromDbToFromattedAnalytics(dates));
+    return;
+}
+
+function fromDbToFromattedAnalytics(data) {
+    if (!data) {
+        return null;
+    }
+    let values = {
+        "Monday": {
+        },
+        "Tuesday": {
+        },
+        "Wednesday": {
+        },
+        "Thursday": {
+        },
+        "Friday": {
+        },
+        "Saturday": {
+        },
+        "Sunday": {
+        },
+    };
+    for (const date of data) {
+        let parsedDate = new Date(date.last_updated);
+        if (values[dayOfWeekAsString(parsedDate.getDay() - 1)][parsedDate.getHours().toString()] == null) {
+            values[dayOfWeekAsString(parsedDate.getDay() - 1)][parsedDate.getHours().toString()] = 1;
+        } else {
+            values[dayOfWeekAsString(parsedDate.getDay() - 1)][parsedDate.getHours().toString()]++;
+        }
+    }
+    let arr = [];
+    for (const item in values) {
+        for (const child in values[item]) {
+            arr.push({
+                name: item,
+                value: child,
+                count: values[item][child],
+            })
+        }
+    }
+    return arr;
+}
+function dayOfWeekAsString(dayIndex) {
+    return ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"][dayIndex];
+}
