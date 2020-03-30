@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import IntentInputs from './IntentInputs.js';
 import Form from 'react-bootstrap/Form'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 const axios = require('axios').default; 
 
-const IntentForm = () => {
+const IntentForm = ({ edit, editState }) => {
 
     const [nameState, setNameState] = useState({
         name: '',
@@ -33,7 +35,6 @@ const IntentForm = () => {
     
     const handleSubmit = (e) => {
         e.preventDefault();
-    
         axios.post('http://localhost:5000/api/intents', {
           name: nameState.name,
           expressions: expressionState,
@@ -46,21 +47,39 @@ const IntentForm = () => {
           console.log(error);
         });
       }
+    
+    const handleCancel = (e) => {
+        e.preventDefault();
+        window.location.reload(true);
+    }
+
+    const handleEdit = (e) => {
+        e.preventDefault();
+        window.location.reload(true);
+    }
 
     return (
         <Form onSubmit={handleSubmit}>
-            <h4 style ={{paddingBottom: "6px"}}>Create New Intent</h4>
-            <Form.Group controlId="Intent">
-                <Form.Label>Intent</Form.Label>
-                <Form.Control type="text" placeholder="Enter an intent" 
-                name="intent"
-                
-                onChange={handleNameChange}
-                />
-            </Form.Group>
+
+         
+        {edit
+            ?<h4 style ={{paddingBottom: "6px"}}>Edit Intent</h4>
+            :<h4 style ={{paddingBottom: "6px"}}>Create New Intent</h4>
+        }
+
+        <Form.Group controlId="Intent">
+        <Form.Label>Intent</Form.Label>
+        <Form.Control type="text" placeholder="Enter an intent" 
+        name="intent"
+        onChange={handleNameChange}
+        />
+        </Form.Group>
+       
+            
+        
             <Form.Group controlId="Intent.Description">
                 <Form.Label>Expressions
-                <Button variant="secondary" size="sm" style={{marginLeft:"5px"}} value="Add another expression"
+                <Button variant="secondary" size="sm" style={{marginLeft:"5px",lineHeight: "1.3" , borderRadius: "15px"}} value="Add another expression"
                 onClick={addIntent}>
                 + 
               </Button></Form.Label>
@@ -77,7 +96,10 @@ const IntentForm = () => {
                     />
                 ))
             }
-            <button onClick={handleSubmit} type="submit" className="btn btn-primary">Add</button>
+            <Row>
+            <Col><button onClick={handleSubmit} type="submit" className="btn btn-primary">Add</button></Col>
+            <Col> <Button onClick = {handleCancel} variant="outline-danger" style={{float:"right", margin:"30px"}}>Cancel</Button></Col>
+            </Row>
         </Form>
         
     );
