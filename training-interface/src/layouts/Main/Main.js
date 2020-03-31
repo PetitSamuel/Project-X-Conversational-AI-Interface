@@ -29,7 +29,7 @@ const Main = props => {
                 <SideNav/>
             </div>
           </Col>
-          <Col lg = {10}>{children}></Col> 
+          <Col lg = {10}>{children}</Col> 
           </Row>
           </div>
 
