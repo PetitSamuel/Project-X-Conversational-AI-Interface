@@ -82,8 +82,8 @@ class Upload extends Component {
                     <Progress max="100" color="success" value={this.state.loaded} >{Math.round(this.state.loaded, 2)}%</Progress>
                   </div>
 
-                  <button type="button" class="btn btn-success btn-block" onClick={this.onClickHandler} disabled={!this.state.selectedFile || !this.isEndingCsv()}>Upload</button>
-                  <button type="button" class="btn btn-success btn-block" disabled={!this.state.downloadUrl} onClick={this.onDownload}>download</button>
+                  <button type="button" class="btn btn-success btn-block" style={{backgroundColor:"#13beb1" ,borderColor:"#13beb1"}} onClick={this.onClickHandler} disabled={!this.state.selectedFile || !this.isEndingCsv()}>Upload</button>
+                  <button type="button" class="btn btn-success btn-block" style={{backgroundColor:"#13beb1" ,borderColor:"#13beb1"}} disabled={!this.state.downloadUrl} onClick={this.onDownload}>download</button>
                 </div>
               </div>
             </div>
