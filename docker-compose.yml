@@ -37,6 +37,7 @@ services:
             - RASA_ENDPOINT=${RASA_ENDPOINT}
             - SERVER_PORT=${SERVER_PORT}
             - MONGO_CONNECTION_STRING=${MONGO_CONNECTION_STRING}
+            - MONGO_CONNECTION_STRING_ADMIN=${MONGO_CONNECTION_STRING_ADMIN}
             - SERVER_UPLOAD_DIR=${SERVER_UPLOAD_DIR}
             # script to wait for mongo to be fully up & running
             - WAIT_HOSTS=db:${MONGO_PORT}

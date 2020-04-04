@@ -68,36 +68,6 @@ const IntentsModel = mongoose.model('intents', intentsSchema);
 const EntitiesModel = mongoose.model('entities', entitiesSchema);
 const DialogModel = mongoose.model('dialog', dialogSchema);
 
-function insertIntent(intent) {
-    // new instance
-    var newIntent = new IntentsModel(intent);
-    // save to db
-    newIntent.save(function (err, data) {
-        if (err) return err;
-        return true;
-    });
-}
-
-function insertEntity(entity) {
-    // new instance
-    var newEntity = new EntitiesModel(entity);
-    // save to db
-    newEntity.save(function (err, data) {
-        if (err) return err;
-        return true;
-    });
-}
-
-function insertDialog(dialog) {
-    // new instance
-    var newDialog = new DialogModel(dialog);
-    // save to db
-    newDialog.save(function (err, data) {
-        if (err) return err;
-        return true;
-    });
-}
-
 module.exports = {
     db: db,
     EntitiesModel: EntitiesModel,
