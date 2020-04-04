@@ -1,0 +1,140 @@
+/*
+    File to contain methods related to (or with) database operations that don't belong in db_api.js
+*/
+const db = require("../database");
+const generatorHelper = require("../Actions/generators");
+const analyticsHelper = require("../Actions/analytics_data_helpers");
+
+/*
+    Returns analytics data for intents in the past week. The return type is an array of object of the following structure:
+        {
+            name: string of the day
+            value: hour of the day
+            count: amount of intents last updated at that time
+        }
+    Request : 
+        GET to /api/intents-analytics
+    Response sample:
+        [
+            {
+                "name": "Monday",
+                "value": 0,
+                "count": 2
+            },
+            {
+                "name": "Monday",
+                "value": 3,
+                "count": 1
+            },
+            {
+                "name": "Tuesday",
+                "value": 5,
+                "count": 2
+            }
+        ]
+*/
+exports.get_intents_analytics = async function (req, res) {
+    var lastWeek = new Date();
+    lastWeek.setDate(lastWeek.getDate() - 7);
+    let dbQueryParam = { "last_updated": { "$gt": lastWeek, "$lt": Date.now() } };
+    try {
+        var dates = await db.IntentsModel.find(dbQueryParam).select('last_updated');
+    } catch (err) {
+        res.status(400).send({ "error": true, "message": err });
+        return;
+    }
+    res.status(200).json(analyticsHelper.formatDbData(dates));
+    return;
+}
+
+/*
+    Same as get_intents_analytics (just above) but for entities.
+    Request: GET to /api/intents-analytics
+    See get_intents_analytics comment for more details.
+*/
+exports.get_entities_analytics = async function (req, res) {
+    var lastWeek = new Date();
+    lastWeek.setDate(lastWeek.getDate() - 7);
+    let dbQueryParam = { "last_updated": { "$gt": lastWeek, "$lt": Date.now() } };
+    try {
+        var dates = await db.EntitiesModel.find(dbQueryParam).select('last_updated');
+    } catch (err) {
+        res.status(400).send({ "error": true, "message": err });
+        return;
+    }
+    res.status(200).json(analyticsHelper.formatDbData(dates));
+    return;
+}
+
+/*
+    This a method only used to test specific features on the frontend.
+    Sending a POST to /api/intents-generation with and empty body will generate
+    100 intents between 1 week ago and now. Those intents are saved in the database.
+*/
+exports.generate_intents = async function (req, res) {
+    const MINS_IN_WEEK = 10080;
+    for (let i = 0; i < 100; i++) {
+        let name = generatorHelper.uuid();
+        var date1 = new Date();
+        date1.setMinutes(date1.getMinutes() - generatorHelper.randomInt(MINS_IN_WEEK));
+        let intent = new db.IntentsModel({
+            name: name,
+            expressions: [generatorHelper.uuid(), generatorHelper.uuid(), generatorHelper.uuid()],
+            last_updated: date1,
+        });
+        const newIntent = await intent.save();
+        if (newIntent !== intent) {
+            res.status(400).json({ "error": true, "message": "Error when saving to db.", "details": newIntent });
+            return;
+        }
+    }
+
+    res.status(200).json({ "message": "populated db with intents" });
+}
+
+/*
+    This a method only used to test specific features on the frontend.
+    Sending a POST to /api/entities-generation with and empty body will generate
+    100 entities between 1 week ago and now. Those intents are saved in the database.
+*/
+exports.generate_entities = async function (req, res) {
+    const MINS_IN_WEEK = 10080;
+    for (let i = 0; i < 100; i++) {
+        let name = generatorHelper.uuid();
+        var date1 = new Date();
+        date1.setMinutes(date1.getMinutes() - generatorHelper.randomInt(MINS_IN_WEEK));
+        let intent = new db.IntentsModel({
+            name: name,
+            expressions: [generatorHelper.uuid(), generatorHelper.uuid(), generatorHelper.uuid()],
+            last_updated: date1,
+        });
+        let entity = new db.EntitiesModel({
+            name: generatorHelper.uuid(),
+            synonyms: {
+                synonym_reference: generatorHelper.uuid(),
+                list: [
+                    generatorHelper.uuid(), generatorHelper.uuid(), generatorHelper.uuid(),
+                ],
+            },
+            last_updated: date1,
+        });
+        const newEntity = await entity.save();
+        if (newEntity !== entity) {
+            res.status(400).json({ "error": true, "message": "Error when saving to db.", "details": newEntity });
+            return;
+        }
+    }
+
+    res.status(200).json({ "message": "populated db with entities" });
+}
+
+/*
+ Helper function to clean the database for testing purposes (run before any kinds of tests are run)
+ Note: Tests are run in a different database thus data in the dev db would not be overwritten
+ */
+exports.clear_db = async function (done) {
+    let statusEntities = await db.EntitiesModel.deleteMany({});
+    let statusIntents = await db.IntentsModel.deleteMany({});
+    let statusDialogs = await db.DialogModel.deleteMany({});
+    done();
+};

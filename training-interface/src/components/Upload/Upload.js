@@ -83,7 +83,7 @@ class Upload extends Component {
                   </div>
 
                   <button type="button" class="btn btn-success btn-block" style={{backgroundColor:"#13beb1" ,borderColor:"#13beb1"}} onClick={this.onClickHandler} disabled={!this.state.selectedFile || !this.isEndingCsv()}>Upload</button>
-                  <button type="button" class="btn btn-success btn-block" style={{backgroundColor:"#13beb1" ,borderColor:"#13beb1"}} disabled={!this.state.downloadUrl} onClick={this.onDownload}>download</button>
+                  <button type="button" class="btn btn-success btn-block" style={{backgroundColor:"#13beb1" ,borderColor:"#13beb1"}} disabled={!this.state.downloadUrl} onClick={this.onDownload}>Download</button>
                 </div>
               </div>
             </div>

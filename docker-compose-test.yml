@@ -1,36 +1,10 @@
 version: '3.7'
 services:
-#    rasa:
-#        image: rasa/rasa:latest-full
-#        container_name: rasa
-#        ports:
-#        - "${RASA_PORT}:${RASA_PORT}"
-#        volumes:
-#        - "./rasa-app-data/models:/app/models"
-#        - "./rasa-app-data/logs:/app/logs"
-#        command: "run --enable-api --debug"
-    project-x-frontend:
-        build: ./training-interface
-        restart: on-failure
-        container_name: project-x-frontend
-        ports:
-            - "${REACT_APP_PORT}:${REACT_APP_PORT}"
-        volumes:
-            - ./training-interface:/training-interface
-        environment:
-        # For some reason for react env variables to be imported properly
-        # you need the REACT_APP prefix & the name can't contain underscores.
-        - REACT_APP_RASAENDPOINT=${RASA_ENDPOINT}
-        depends_on:
-#        - rasa
-        - server
-        restart: on-failure
-    server:
-        build: ./server
-        restart: always
-        container_name: server
-        ports:
-            - "${SERVER_PORT}:${SERVER_PORT}"
+    test_server:
+        build:
+            context: ./server
+            dockerfile: Dockerfile.test
+        container_name: test_server
         volumes:
             - ./server:/server
         environment:
@@ -43,12 +17,12 @@ services:
             - WAIT_HOSTS=db:${MONGO_PORT}
         depends_on:
             - db
-#            - rasa
         restart: on-failure
     db:
         image: mongo:latest
         volumes:
-            - $DATABASE_DATA:/$DATABASE_DATA
+            # Use a different dir to separate testing data from dev (or prod) data
+            - $TEST_DATABASE_DATA:/$TEST_DATABASE_DATA
             # Put the script to initialise the database in the right directory withing mongo container
             # It will execute it on initialisation
             - ./init-db.js:/docker-entrypoint-initdb.d/init-db.js:ro
