@@ -8,9 +8,6 @@ node_modules
 # testing
 coverage
 
-# production
-build
-
 # misc
 .DS_Store
 .env.local
@@ -24,9 +21,13 @@ yarn-error.log*
 
 package-lock.json
 server/package-lock.json
+
 # maria db
 db
 testdb
+
+# rasa
+rasa-app-data
 
 # ignore server file uploads
 server/Api/uploaded_files/

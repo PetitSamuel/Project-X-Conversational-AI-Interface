@@ -21,6 +21,7 @@ services:
     db:
         image: mongo:latest
         volumes:
+            # Use a different dir to separate testing data from dev (or prod) data
             - $TEST_DATABASE_DATA:/$TEST_DATABASE_DATA
             # Put the script to initialise the database in the right directory withing mongo container
             # It will execute it on initialisation

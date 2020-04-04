@@ -53,3 +53,39 @@ mongo --port 27017 -u "root" -p "root" --authenticationDatabase "db"
 ```
 
 To note : these users are create when the database is initialised. The initialisation script is in the root directory : "init-db.js".
+
+# Testing the backend:
+To run backend tests, simply execute the "run-tests.sh" script. It will run the testing docker setup which creates a testing image for the server and runs the services that it depends on.
+
+In linux:
+```
+// You may need to make the script executable
+chmod +x run-tests.sh
+
+// run the tests
+./run-tests.sh
+```
+
+TO NOTE:
+- I didn't find how to automatically kill the containers when tests end. As a result of this, when the tests are done hit ctrl + c.
+- You're going to want to stop any remaining containers that are running (don't skip this step!) 
+
+To stop all running containers (recommended):
+```
+// You may need to make the script executable
+chmod +x end-tests.sh
+
+// run the tests
+./end-tests.sh
+```
+When this command ends you're done!
+
+The other options, if you have other containers running from a different project you don't want to kill, then simply:
+
+```
+docker container ls
+docker stop <NAME>
+
+// for example in my case:
+docker stop backend_test_db_1
+```
