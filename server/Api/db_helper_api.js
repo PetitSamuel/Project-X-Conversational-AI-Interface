@@ -1,7 +1,38 @@
+/*
+    File to contain methods related to (or with) database operations that don't belong in db_api.js
+*/
 const db = require("../database");
 const generatorHelper = require("../Actions/generators");
 const analyticsHelper = require("../Actions/analytics_data_helpers");
 
+/*
+    Returns analytics data for intents in the past week. The return type is an array of object of the following structure:
+        {
+            name: string of the day
+            value: hour of the day
+            count: amount of intents last updated at that time
+        }
+    Request : 
+        GET to /api/intents-analytics
+    Response sample:
+        [
+            {
+                "name": "Monday",
+                "value": 0,
+                "count": 2
+            },
+            {
+                "name": "Monday",
+                "value": 3,
+                "count": 1
+            },
+            {
+                "name": "Tuesday",
+                "value": 5,
+                "count": 2
+            }
+        ]
+*/
 exports.get_intents_analytics = async function (req, res) {
     var lastWeek = new Date();
     lastWeek.setDate(lastWeek.getDate() - 7);
@@ -16,7 +47,11 @@ exports.get_intents_analytics = async function (req, res) {
     return;
 }
 
-// todo : add comment here
+/*
+    Same as get_intents_analytics (just above) but for entities.
+    Request: GET to /api/intents-analytics
+    See get_intents_analytics comment for more details.
+*/
 exports.get_entities_analytics = async function (req, res) {
     var lastWeek = new Date();
     lastWeek.setDate(lastWeek.getDate() - 7);
@@ -31,6 +66,11 @@ exports.get_entities_analytics = async function (req, res) {
     return;
 }
 
+/*
+    This a method only used to test specific features on the frontend.
+    Sending a POST to /api/intents-generation with and empty body will generate
+    100 intents between 1 week ago and now. Those intents are saved in the database.
+*/
 exports.generate_intents = async function (req, res) {
     const MINS_IN_WEEK = 10080;
     for (let i = 0; i < 100; i++) {
@@ -52,6 +92,11 @@ exports.generate_intents = async function (req, res) {
     res.status(200).json({ "message": "populated db with intents" });
 }
 
+/*
+    This a method only used to test specific features on the frontend.
+    Sending a POST to /api/entities-generation with and empty body will generate
+    100 entities between 1 week ago and now. Those intents are saved in the database.
+*/
 exports.generate_entities = async function (req, res) {
     const MINS_IN_WEEK = 10080;
     for (let i = 0; i < 100; i++) {
@@ -83,7 +128,10 @@ exports.generate_entities = async function (req, res) {
     res.status(200).json({ "message": "populated db with entities" });
 }
 
-// Helper function to clean the database for testing purposes
+/*
+ Helper function to clean the database for testing purposes (run before any kinds of tests are run)
+ Note: Tests are run in a different database thus data in the dev db would not be overwritten
+ */
 exports.clear_db = async function (done) {
     let statusEntities = await db.EntitiesModel.deleteMany({});
     let statusIntents = await db.IntentsModel.deleteMany({});
