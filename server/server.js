@@ -44,7 +44,6 @@ router.get('/download-md/:filename', converter_api_controller.get_download_md);
 
 router.delete('/intents/:name', db_api_controller.remove_intent);
 router.delete('/entities/:name', db_api_controller.remove_entity);
-router.delete('/clear-database', db_helper_api_controller.clear_db);
 
 app.use('/api', router);
 
@@ -54,3 +53,5 @@ app.use(function (req, res, next) {
 });
 
 app.listen(process.env.SERVER_PORT, () => console.log('Server started on ' + process.env.SERVER_PORT));
+
+exports.app = app;

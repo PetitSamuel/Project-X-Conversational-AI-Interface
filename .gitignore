@@ -26,6 +26,7 @@ package-lock.json
 server/package-lock.json
 # maria db
 db
+testdb
 
 # ignore server file uploads
 server/Api/uploaded_files/

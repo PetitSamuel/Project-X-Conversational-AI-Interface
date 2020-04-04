@@ -83,9 +83,10 @@ exports.generate_entities = async function (req, res) {
     res.status(200).json({ "message": "populated db with entities" });
 }
 
-exports.clear_db = async function (req, res) {
+// Helper function to clean the database for testing purposes
+exports.clear_db = async function (done) {
     let statusEntities = await db.EntitiesModel.deleteMany({});
     let statusIntents = await db.IntentsModel.deleteMany({});
     let statusDialogs = await db.DialogModel.deleteMany({});
-    res.status(200).json({"intents": statusIntents, "entities": statusEntities, "dialogs": statusDialogs});
+    done();
 };
