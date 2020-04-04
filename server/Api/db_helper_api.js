@@ -84,8 +84,8 @@ exports.generate_entities = async function (req, res) {
 }
 
 exports.clear_db = async function (req, res) {
-    let statusEntities = await db.EntitiesModel.remove({});
-    let statusIntents = await db.IntentsModel.remove({});
-    let statusDialogs = await db.DialogModel.remove({});
+    let statusEntities = await db.EntitiesModel.deleteMany({});
+    let statusIntents = await db.IntentsModel.deleteMany({});
+    let statusDialogs = await db.DialogModel.deleteMany({});
     res.status(200).json({"intents": statusIntents, "entities": statusEntities, "dialogs": statusDialogs});
 };
