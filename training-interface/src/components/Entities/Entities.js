@@ -14,9 +14,6 @@ class Entities extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      Entity: '',
-      Value: '',
-      Synonyms: '',
       tableArray: null,
     };
   }
