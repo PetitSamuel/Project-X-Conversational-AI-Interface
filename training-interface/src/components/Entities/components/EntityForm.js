@@ -69,8 +69,7 @@ const EntityForm = ({ edit, editState }) => {
 
 
 
-            <Form.Group controlId="Intent.Description">
-            </Form.Group>
+            
             {
                 entityState.map((val, idx) => (
                     <IntentInputs
@@ -85,7 +84,7 @@ const EntityForm = ({ edit, editState }) => {
                 <Col><button onClick={handleSubmit} type="submit" className="btn btn-primary">Add</button></Col>
                 <Col> <Button onClick={handleCancel} variant="outline-danger" style={{ float: "right", margin: "30px" }}>Cancel</Button></Col>
             </Row>
-            <p>Add another reference<Button variant="secondary" size="sm" style={{ marginLeft: "5px", lineHeight: "1.3", borderRadius: "15px" }} value="Add another expression"
+            <p>Add another reference<Button variant="secondary" size="sm" style={{ marginLeft: "5px", lineHeight: "0.9", borderRadius: "10px" }}
                         onClick={addEntity}>
                         +
               </Button></p>
