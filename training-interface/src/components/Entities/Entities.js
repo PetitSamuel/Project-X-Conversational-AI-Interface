@@ -6,6 +6,7 @@ import FormControl from 'react-bootstrap/FormControl'
 import Button from 'react-bootstrap/Button'
 import Jumbotron from 'react-bootstrap/Jumbotron'
 import Container from 'react-bootstrap/Container'
+import EntityForm from './components/EntityForm'
 import '../../App.css';
 
 const axios = require('axios').default;
@@ -101,7 +102,7 @@ class Entities extends Component {
             {/* Ruxin I have just converted your form to React Bootstrap (makes styling easier)
           https://react-bootstrap.netlify.com/components/forms/#forms */}
             <Jumbotron fluid style={{ width: "50%", padding: "20px" }}>
-              {/*Form*/}
+            <EntityForm edit={this.state.edit} editState={this.state.edit} />
             </Jumbotron>
           </Col>
         </Row>

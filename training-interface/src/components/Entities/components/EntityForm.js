@@ -56,9 +56,6 @@ const EntityForm = ({ edit, editState }) => {
 
     return (
         <Form onSubmit={handleSubmit}>
-
-
-
             <Form.Group controlId="Intent">
                 <Form.Label>Entity name</Form.Label>
                 <Form.Control type="text" placeholder="Enter entity name"
@@ -67,9 +64,7 @@ const EntityForm = ({ edit, editState }) => {
                 />
             </Form.Group>
 
-
-
-            
+            <div style={{overflow:"auto", maxHeight: "300px",margin:"2px", padding: "5px" }}>
             {
                 entityState.map((val, idx) => (
                     <IntentInputs
@@ -80,6 +75,7 @@ const EntityForm = ({ edit, editState }) => {
                     />
                 ))
             }
+            </div>
             <Row>
                 <Col><button onClick={handleSubmit} type="submit" className="btn btn-primary">Add</button></Col>
                 <Col> <Button onClick={handleCancel} variant="outline-danger" style={{ float: "right", margin: "30px" }}>Cancel</Button></Col>

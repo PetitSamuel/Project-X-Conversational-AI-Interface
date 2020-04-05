@@ -24,7 +24,7 @@ const IntentInputs = ({ idx, entityState, handleEntityChange }) => {
 
 
     return (
-        <div key={`enti-${idx}`}>
+        <div key={`enti-${idx}`} style={{ margin: "2px", borderStyle: "dashed", borderWeight: "0.1px", borderColor: "#13beb1", padding: "5px" }}>
             <Form.Label>Reference
                 </Form.Label>
             <Form.Control type="text" placeholder={`Reference ${idx + 1}`}
@@ -35,15 +35,15 @@ const IntentInputs = ({ idx, entityState, handleEntityChange }) => {
                 value={entityState[idx].name}
                 onChange={handleEntityChange}
             />
-            
+
             <Form.Group controlId="Synonym.Description">
-                <Form.Label style = {{marginLeft:"10px", marginTop:"5px"}}>Synonyms
-                <Button variant="secondary" size="sm" style = { {marginLeft: "5px", lineHeight: "0.9", borderRadius: "10px"} } value="Add another expression"
+                <Form.Label style={{ marginLeft: "10px", marginTop: "5px" }}>Synonyms
+                <Button variant="secondary" size="sm" style={{ marginLeft: "5px", lineHeight: "0.9", borderRadius: "10px" }} value="Add another expression"
                         onClick={addList}>
                         +
               </Button></Form.Label>
             </Form.Group>
-            
+
             {
                 synonymState.map((val, idx) => (
                     <SynonymList
