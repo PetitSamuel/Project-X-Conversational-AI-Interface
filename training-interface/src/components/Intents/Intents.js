@@ -48,6 +48,7 @@ class Intents extends Component {
       });
       return getDatas;
   }
+
   handleEdit(intent){
    this.setState({edit: true});
    this.setState({editState: intent});
@@ -93,8 +94,9 @@ class Intents extends Component {
     });
   }
  
-  //When the user clicks edit the corresponding intent object is passed in here
+  
 
+    // Similar to entities, if I was to work more on this there would be a table component to prevent dupe
   generateTable(){
     this.getData()
       .then((response) => { 
