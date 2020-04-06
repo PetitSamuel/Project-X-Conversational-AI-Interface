@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import SynonymInput from './SynonymInput.js';
+import SynonymInputs from './SynonymInput.js';
 import Form from 'react-bootstrap/Form'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
@@ -18,28 +18,30 @@ const EntityForm = () => {
         name: e.target.value,
     });
 
-    const blankIntent = { reference: '', synonym: [] };
-    const [entityState, setexpressionState] = useState([
+    const blankIntent = { synonym_reference: '', list: [] };
+    const [entityState, setEntityState] = useState([
         { ...blankIntent },
     ]);
 
     const addReference = () => {
-        setexpressionState([...entityState, { ...blankIntent }]);
+        setEntityState([...entityState, { ...blankIntent }]);
     };
 
     const handleReferenceChange = (e) => {
         const updatedEntities = [...entityState];
-        updatedEntities[e.target.dataset.idx]["reference"] = e.target.value;
-        setexpressionState(updatedEntities);
+        updatedEntities[e.target.dataset.idx]["synonym_reference"] = e.target.value;
+        setEntityState(updatedEntities);
     };
 
 
     const handleSubmit = (e) => {
-      /*  e.preventDefault();
-        foreach
+    console.log(entityState);
+    console.log(nameState);
+     e.preventDefault();
+     console.log("TRYING")
         axios.post('http://localhost:5000/api/entities', {
-            reference: nameState,
-            expressions: entityState,
+            name: nameState.name,
+            synonyms: entityState,
         })
             .then(function (response) {
                 console.log(response);
@@ -47,13 +49,14 @@ const EntityForm = () => {
             })
             .catch(function (error) {
                 console.log(error);
-            });*/
-    }
+            });
+ 
+    };
 
     const handleCancel = (e) => {
         e.preventDefault();
         window.location.reload(true);
-    }
+    };
 
 
     return (
@@ -74,7 +77,7 @@ const EntityForm = () => {
                             idx={idx}
                             entityState={entityState}
                             handleReferenceChange={handleReferenceChange}
-                            setexpressionState={setexpressionState}
+                            setEntityState={setEntityState}
                             entityState={entityState}
                         />
                     ))
@@ -82,7 +85,7 @@ const EntityForm = () => {
             </div>
             <Row>
                 <Col><button onClick={handleSubmit} type="submit" className="btn btn-primary">Add</button></Col>
-                <Col> <Button onClick={handleCancel} variant="outline-danger" style={{ float: "right", margin: "30px" }}>Cancel</Button></Col>
+                <Col> <Button onClick={handleSubmit} variant="outline-danger" style={{ float: "right", margin: "30px" }}>Cancel</Button></Col>
             </Row>
             <p>Add another reference<Button variant="secondary" size="sm" style={{ marginLeft: "5px", lineHeight: "0.9", borderRadius: "10px" }}
                 onClick={addReference}>

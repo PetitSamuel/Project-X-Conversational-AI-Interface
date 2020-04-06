@@ -13,7 +13,7 @@ const SynonymList = ({ idx, entityState, count, handleSynonymChange }) => {
                 data-idx={idx}
                 id={synonymId}
                 className={count}
-                value={entityState[count].synonym[idx]}
+                value={entityState[count].list[idx]}
                 onChange={handleSynonymChange}
             />
         </div>

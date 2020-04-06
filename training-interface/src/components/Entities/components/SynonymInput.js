@@ -4,11 +4,11 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import SynonymList from './SynonymList.js';
 
-const SynonymInputs = ({ idx, entityState, handleReferenceChange, setexpressionState}) => {
+const SynonymInputs = ({ idx, entityState, handleReferenceChange, setEntityState}) => {
     const entityId = `enti-${idx}`;
     const count = idx;
 
-    const blankSynonym = { name: '', synonym: [] };
+    const blankSynonym = { name: '', list: [] };
     const [synonymState, setsynonymState] = useState([
         { ...blankSynonym },
     ]);
@@ -20,8 +20,8 @@ const SynonymInputs = ({ idx, entityState, handleReferenceChange, setexpressionS
     const handleSynonymChange = (e) => {
         const updatedEntities = [...entityState];
         //This is the location to be edited.. index in reference array -> index in synonym array inside reference obj
-        updatedEntities[idx]["synonym"][e.target.dataset.idx] = e.target.value;
-       setexpressionState(updatedEntities);
+        updatedEntities[idx]["list"][e.target.dataset.idx] = e.target.value;
+       setEntityState(updatedEntities);
     };
 
 
