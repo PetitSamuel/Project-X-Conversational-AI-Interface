@@ -4,10 +4,11 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import SynonymList from './SynonymList.js';
 
-const IntentInputs = ({ idx, entityState, handleEntityChange }) => {
+const SynonymInputs = ({ idx, entityState, handleReferenceChange, setexpressionState}) => {
     const entityId = `enti-${idx}`;
+    const count = idx;
 
-    const blankSynonym = { name: '', expression: [] };
+    const blankSynonym = { name: '', synonym: [] };
     const [synonymState, setsynonymState] = useState([
         { ...blankSynonym },
     ]);
@@ -17,28 +18,28 @@ const IntentInputs = ({ idx, entityState, handleEntityChange }) => {
     };
 
     const handleSynonymChange = (e) => {
-        const updatedSynonym = [...synonymState];
-        updatedSynonym[e.target.dataset.idx] = e.target.value;
-        setsynonymState(updatedSynonym);
+        const updatedEntities = [...entityState];
+        //This is the location to be edited.. index in reference array -> index in synonym array inside reference obj
+        updatedEntities[idx]["synonym"][e.target.dataset.idx] = e.target.value;
+       setexpressionState(updatedEntities);
     };
 
 
     return (
         <div key={`enti-${idx}`} style={{ margin: "2px", borderStyle: "dashed", borderWeight: "0.1px", borderColor: "#13beb1", padding: "5px" }}>
-            <Form.Label>Reference
-                </Form.Label>
+            <Form.Label>Reference</Form.Label>
             <Form.Control type="text" placeholder={`Reference ${idx + 1}`}
                 name={entityId}
                 data-idx={idx}
                 id={entityId}
                 className="entity"
                 value={entityState[idx].name}
-                onChange={handleEntityChange}
+                onChange={handleReferenceChange}
             />
 
             <Form.Group controlId="Synonym.Description">
                 <Form.Label style={{ marginLeft: "10px", marginTop: "5px" }}>Synonyms
-                <Button variant="secondary" size="sm" style={{ marginLeft: "5px", lineHeight: "0.9", borderRadius: "10px" }} value="Add another expression"
+                <Button variant="secondary" size="sm" style={{ marginLeft: "5px", lineHeight: "0.9", borderRadius: "10px" }} value="Add another synonym"
                         onClick={addList}>
                         +
               </Button></Form.Label>
@@ -48,8 +49,9 @@ const IntentInputs = ({ idx, entityState, handleEntityChange }) => {
                 synonymState.map((val, idx) => (
                     <SynonymList
                         key={`syn-${idx}`}
+                        entityState={entityState}
                         idx={idx}
-                        synonymState={synonymState}
+                        count={count}
                         handleSynonymChange={handleSynonymChange}
                     />
                 ))
@@ -58,10 +60,10 @@ const IntentInputs = ({ idx, entityState, handleEntityChange }) => {
     );
 };
 
-IntentInputs.propTypes = {
+SynonymInputs.propTypes = {
     idx: PropTypes.number,
     entityState: PropTypes.array,
     handleCatChange: PropTypes.func,
 };
 
-export default IntentInputs;
+export default SynonymInputs;

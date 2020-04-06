@@ -1,21 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Form from 'react-bootstrap/Form'
 
-const SynonymList = ({ idx, synonymState, handleSynonymChange }) => {
+const SynonymList = ({ idx, entityState, count, handleSynonymChange }) => {
     const synonymId = `syn-${idx}`;
-
 
 
     return (
         <div style ={{marginLeft:"10px"}} key={`exp-${idx}`} >
             
-            <Form.Control type="text" placeholder={`Synonym ${idx + 1}`}
-                name={synonymId}
+            <input type="text" placeholder={`Synonym ${idx + 1}`}
+                name={count}
                 data-idx={idx}
                 id={synonymId}
-                className="entity"
-                value={synonymState[idx].synonymId}
+                className={count}
+                value={entityState[count].synonym[idx]}
                 onChange={handleSynonymChange}
             />
         </div>

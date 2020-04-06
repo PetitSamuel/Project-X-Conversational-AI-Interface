@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import IntentInputs from './SynonymInput.js';
+import SynonymInput from './SynonymInput.js';
 import Form from 'react-bootstrap/Form'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
+
 const axios = require('axios').default;
 
-const EntityForm = ({ edit, editState }) => {
+const EntityForm = () => {
 
     const [nameState, setNameState] = useState({
         name: '',
@@ -17,26 +18,27 @@ const EntityForm = ({ edit, editState }) => {
         name: e.target.value,
     });
 
-    const blankIntent = { name: '', expression: [] };
+    const blankIntent = { reference: '', synonym: [] };
     const [entityState, setexpressionState] = useState([
         { ...blankIntent },
     ]);
 
-    const addEntity = () => {
+    const addReference = () => {
         setexpressionState([...entityState, { ...blankIntent }]);
     };
 
-    const handleEntityChange = (e) => {
+    const handleReferenceChange = (e) => {
         const updatedEntities = [...entityState];
-        updatedEntities[e.target.dataset.idx] = e.target.value;
+        updatedEntities[e.target.dataset.idx]["reference"] = e.target.value;
         setexpressionState(updatedEntities);
     };
 
 
     const handleSubmit = (e) => {
-        e.preventDefault();
-        axios.post('http://localhost:5000/api/intents', {
-            name: nameState.name,
+      /*  e.preventDefault();
+        foreach
+        axios.post('http://localhost:5000/api/entities', {
+            reference: nameState,
             expressions: entityState,
         })
             .then(function (response) {
@@ -45,7 +47,7 @@ const EntityForm = ({ edit, editState }) => {
             })
             .catch(function (error) {
                 console.log(error);
-            });
+            });*/
     }
 
     const handleCancel = (e) => {
@@ -57,32 +59,34 @@ const EntityForm = ({ edit, editState }) => {
     return (
         <Form onSubmit={handleSubmit}>
             <Form.Group controlId="Intent">
-                <Form.Label>Entity name</Form.Label>
-                <Form.Control type="text" placeholder="Enter entity name"
-                    name="entity"
+                <Form.Label>Entity reference</Form.Label>
+                <Form.Control type="text" placeholder="Enter entity reference"
+                    reference="entity"
                     onChange={handleNameChange}
                 />
             </Form.Group>
 
-            <div style={{overflow:"auto", maxHeight: "300px",margin:"2px", padding: "5px" }}>
-            {
-                entityState.map((val, idx) => (
-                    <IntentInputs
-                        key={`enti-${idx}`}
-                        idx={idx}
-                        entityState={entityState}
-                        handleEntityChange={handleEntityChange}
-                    />
-                ))
-            }
+            <div style={{ overflow: "auto", maxHeight: "300px", margin: "2px", padding: "5px" }}>
+                {
+                    entityState.map((val, idx) => (
+                        <SynonymInputs
+                            key={`enti-${idx}`}
+                            idx={idx}
+                            entityState={entityState}
+                            handleReferenceChange={handleReferenceChange}
+                            setexpressionState={setexpressionState}
+                            entityState={entityState}
+                        />
+                    ))
+                }
             </div>
             <Row>
                 <Col><button onClick={handleSubmit} type="submit" className="btn btn-primary">Add</button></Col>
                 <Col> <Button onClick={handleCancel} variant="outline-danger" style={{ float: "right", margin: "30px" }}>Cancel</Button></Col>
             </Row>
             <p>Add another reference<Button variant="secondary" size="sm" style={{ marginLeft: "5px", lineHeight: "0.9", borderRadius: "10px" }}
-                        onClick={addEntity}>
-                        +
+                onClick={addReference}>
+                +
               </Button></p>
         </Form>
 
