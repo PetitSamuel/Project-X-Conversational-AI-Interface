@@ -31,3 +31,6 @@ rasa-app-data
 
 # ignore server file uploads
 server/Api/uploaded_files/
+
+# nyc js test outputs
+.nyc_output

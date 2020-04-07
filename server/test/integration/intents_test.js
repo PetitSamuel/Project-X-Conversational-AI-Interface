@@ -2,9 +2,9 @@ const chai = require("chai");
 const chaiHttp = require("chai-http");
 const chaiAsPromised = require('chai-as-promised');
 
-const app = require('../server').app;
-const db_helper = require("../Api/db_helper_api");
-const db = require("../database");
+const app = require('../../server').app;
+const db_helper = require("../../Api/db_helper_api");
+const db = require("../../database");
 
 const should = chai.should();
 const assert = require('chai').assert;
