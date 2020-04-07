@@ -35,7 +35,6 @@ class Intents extends Component {
   getData() {
     var getDatas = axios.get('http://localhost:5000/api/intents')
       .then((response) => {
-        console.log(response.data);
         return response.data;
       })
       .catch(function (error) {
@@ -57,7 +56,7 @@ class Intents extends Component {
     var arr = this.state.removeList;
     for (var i = 0; i < arr.length; i++) {
       //Remove if unchecked
-      if (arr[i] == e.target.name) {
+      if (arr[i] === e.target.name) {
         inList = true;
         arr.splice(i, 1)
         console.log('Removed', e.target.name)
@@ -97,7 +96,6 @@ class Intents extends Component {
   generateTable() {
     this.getData()
       .then((response) => {
-        console.log("response", response);
         var x = response;
         var arr = [];
 
