@@ -35,10 +35,9 @@ const EntityForm = () => {
 
 
     const handleSubmit = (e) => {
-    console.log(entityState);
-    console.log(nameState);
-     e.preventDefault();
-     console.log("TRYING")
+        console.log(entityState);
+        console.log(nameState);
+        e.preventDefault();
         axios.post('http://localhost:5000/api/entities', {
             name: nameState.name,
             synonyms: entityState,
@@ -50,7 +49,7 @@ const EntityForm = () => {
             .catch(function (error) {
                 console.log(error);
             });
- 
+
     };
 
     const handleCancel = (e) => {
