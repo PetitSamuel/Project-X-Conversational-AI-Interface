@@ -6,7 +6,7 @@ services:
             dockerfile: Dockerfile.test
         container_name: test_server
         volumes:
-            - ./server:/server
+            - ./server:/server-tests
         environment:
             - RASA_ENDPOINT=${RASA_ENDPOINT}
             - SERVER_PORT=${SERVER_PORT}
@@ -27,8 +27,6 @@ services:
             # It will execute it on initialisation
             - ./init-db.js:/docker-entrypoint-initdb.d/init-db.js:ro
         environment:
-            # to connect from cmd line run (read / write user) for root access use root user
-            # mongo --port 27017 -u "user" -p "password" --authenticationDatabase "db"
             - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
             - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
             - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}

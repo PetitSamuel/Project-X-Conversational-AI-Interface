@@ -19,7 +19,7 @@ describe("Intents", () => {
     db_helper.clear_db(done);
   });
 
-  it("should get intents", done => {
+  it("intents should be empty", done => {
     chai
       .request(app)
       .get("/api/intents")
@@ -28,34 +28,9 @@ describe("Intents", () => {
         res.should.have.status(200);
         res.should.be.json;
         res.body.should.be.a("array");
-        console.log(res.body);
+        res.body.should.be.eql([]);
         done();
       });
   });
-  it("intents generation", done => {
-    chai
-      .request(app)
-      .post("/api/intents-generation")
-      .end((err, res) => {
-        if (err) done(err)
-        res.should.have.status(200);
-        res.should.be.json;
-        res.body.should.be.a("object");
-        console.log(res.body);
-        done();
-      });
-  });
-  it("should get intents 2", done => {
-    chai
-      .request(app)
-      .get("/api/intents")
-      .end((err, res) => {
-        if (err) done(err)
-        res.should.have.status(200);
-        res.should.be.json;
-        res.body.should.be.a("array");
-        console.log(res.body.length);
-        done();
-      });
-  });
+
 });
