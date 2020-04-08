@@ -4,6 +4,9 @@ const db_api_controller = require('./Api/db_api');
 const db_helper_api_controller = require('./Api/db_helper_api');
 const converter_api_controller = require('./Api/converter_api');
 
+/*
+    Define /api endpoints.
+*/
 router.post('/intents', db_api_controller.post_intents);
 router.post('/intents-generation', db_helper_api_controller.generate_intents);
 router.post('/entities', db_api_controller.post_entities);

@@ -2,5 +2,5 @@
 node_modules
 npm-debug.log
 .*
-server/Api/uploaded_files
+server/uploaded_files
 .nyc_output
