@@ -5,12 +5,8 @@ const chaiAsPromised = require('chai-as-promised');
 const app = require('../../server').app;
 const db_helper = require("../../Api/db_helper_api");
 const db = require("../../database");
-
-const should = chai.should();
 const assert = require('chai').assert;
-const expect = require('chai').expect;
-
-const SERVER_URL = `http://localhost:${process.env.SERVER_PORT}`;
+const should = chai.should();
 
 chai.use(chaiHttp);
 chai.use(chaiAsPromised);
@@ -38,7 +34,7 @@ describe("Intents", () => {
   it("intents should be empty", done => {
     db.IntentsModel.countDocuments({}).should.eventually.equal(0, "Expected number of intents in db to be 0 (cleaned before tests)").notify(done);
   });
-  it("posting new intent works", function(done) {
+  it("posting new intent works", function (done) {
     chai
       .request(app)
       .post("/api/intents")
@@ -67,7 +63,7 @@ describe("Intents", () => {
         res.body.should.be.a("object");
         assert.equal(body.name, INTENT_1_EXPRESSION.name, "Returned name doesn't match sent name");
         assert.deepEqual(body.expressions, INTENT_1_EXPRESSION.expressions, "Returned expressions list doesn't match sent expressions");
-        
+
         // make sure the database only stores 1 instance of a name & updates that one (ie doesn't make a new entry in the database)
         db.IntentsModel.countDocuments({}).should.eventually.equal(1, "Expected number of intents in db to be 1").notify(done);
       });
