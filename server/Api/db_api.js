@@ -129,7 +129,7 @@ exports.remove_intent = async function (req, res) {
         return;
     }
     if (!params.name) {
-        res.status(400).json({ "error": true, "message": "name is a required parameter." })
+        res.status(400).json({ "error": true, "message": "Intent name be specified in the endpoint." })
         return;
     }
     let status = await db.IntentsModel.deleteOne({ 'name': params.name });
@@ -192,9 +192,6 @@ exports.remove_intent = async function (req, res) {
 */
 exports.post_entities = async function (req, res) {
     let params = req.body;
-    if (!params.name || !params.synonyms || params.synonyms.length === 0) {
-        res.status(400).json({ "error": "Request needs a name (string), and an array with at least one synonym." })
-    }
     if (!params) {
         res.status(400).json({ "error": true, "message": "empty request body." });
         return;
@@ -203,7 +200,7 @@ exports.post_entities = async function (req, res) {
         res.status(400).json({ "error": true, "message": "Request needs a name field." });
         return;
     }
-    if (!params.synonyms || !Array.isArray(params.synonyms)) {
+    if (!params.synonyms || !Array.isArray(params.synonyms) || params.synonyms.length === 0) {
         res.status(400).json({ "error": true, "message": "Request needs a synonyms field. (Array)." });
         return;
     }

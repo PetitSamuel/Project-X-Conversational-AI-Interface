@@ -11,7 +11,6 @@ router.post('/intents', db_api_controller.post_intents);
 router.post('/intents-generation', db_helper_api_controller.generate_intents);
 router.post('/entities', db_api_controller.post_entities);
 router.post('/entities-generation', db_helper_api_controller.generate_entities);
-// router.post('/api/dialogs', db_api_controller.post_dialogs);
 router.post('/upload-csv', converter_api_controller.post_upload_csv);
 
 router.get('/intents', db_api_controller.get_intents);
@@ -20,7 +19,6 @@ router.get('/intents/:name', db_api_controller.get_intents);
 router.get('/entities', db_api_controller.get_entities);
 router.get('/entities-analytics', db_helper_api_controller.get_entities_analytics);
 router.get('/entities/:name', db_api_controller.get_entities);
-// router.get('/api/dialogs', db_api_controller.get_dialogs);
 router.get('/download-md/:filename', converter_api_controller.get_download_md);
 
 router.delete('/intents/:name', db_api_controller.remove_intent);

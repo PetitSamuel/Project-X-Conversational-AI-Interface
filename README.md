@@ -41,7 +41,306 @@ TEST_DATABASE_DATA=./testdb
 ```
 
 ## API
-TODO(@Sam) : add details about the api here
+Here's a brief description on our API endpoints. First of all, all of our endpoints are defined in the router.js file in the server directory. It defines a list of endpoints and what function to map it to.
+
+#### POST Requests
+All the following endpoints work for POST http requests.
+##### /api/intents
+Required body parameters (in JSON format):
+```
+{
+    name: String,
+    expressions: String array
+}
+```
+If one of the parameters is not present or expressions is not an array then status code 400 will be returned and the body will look as follows:
+```
+{
+    error: true,
+    message: <reason for 400 status>
+}
+```
+
+On success, a response such as the following will be sent;
+```
+{
+    "expressions": [
+        "hello"
+    ],
+    "_id": "5e7cc18f5c14b30009de5865",
+    "name": "test_name",
+    "__v": 0
+}
+```
+Note that names are unique and thus if a request is received for a name that doesn't exists, then an intent of that name will be created with the expressions specified in that requests. If an intent name already exists and a post requests is received for that intent, the list of expressions for that intent will be overwritten with the ones received in the request. Thus this endpoint can also be used to delete a single or multiple expressions from an intent.
+
+##### /api/entities
+Required body parameters (in JSON format):
+```
+{
+    name: String,
+    synonyms: Array of: {
+        synonym_reference: String,
+        list: String array
+    }
+}
+```
+If one of the parameters is not present or an instance of a synonym object is does not have both of the specified variables, then status code 400 will be returned and the body will look as follows:
+```
+{
+    error: true,
+    message: <reason for 400 status>
+}
+```
+
+On success, a response such as the following will be sent;
+```
+{
+    "_id": "5e7cc9d3cebcc70008da1d46",
+    "name": "test_name",
+    "synonyms": [
+        {
+            "list": [
+                "first item",
+                "second item"
+            ],
+            "_id": "5e7cc9d3cebcc70008da1d47",
+            "synonym_reference": "reference 1"
+        }
+    ],
+    "date": "2020-03-26T15:27:15.507Z",
+    "__v": 0
+}
+```
+Note that names are unique and thus if a request is received for a name that doesn't exists, then an entity of that name will be created with the synonyms specified in that requests. If an entity name already exists and a post requests is received for that entity, the list of synonyms for that entity will be overwritten with the ones received in the request. Thus this endpoint can also be used to delete a single or multiple synonyms from an entity.
+
+##### /api/intents-generation
+This endpoint does not require a body. It is also not used in the frontent, its sole purpose was to generate intents in our database for testing purposes while developping.
+The response will have the following structure:
+```
+{
+    "message": "populated db with intents"
+}
+```
+
+The database will then contain 100 uniquely generated intents, with dates ranging from 7 days ago until now. This can be checked using the GET intents endpoint specified below.
+
+##### /api/entities-generation
+Similarly to the above endpoint, it does not require a body. It is also not used in the frontent, its sole purpose was to generate entities in our database for testing purposes while developping.
+The response will have the following structure:
+```
+{
+    "message": "populated db with entities"
+}
+```
+
+The database will then contain 100 uniquely generated entities, with dates ranging from 7 days ago until now. This can be checked using the GET entities endpoint specified below.
+
+##### /api/upload-csv
+This endpoint handles CSV file upload. It requires the following structure:
+```
+{
+    file: <csv file contents>
+}
+```
+The server will save the file locally (renamed using the current time such as to make files unique and avoid overwritting already existing files) in the "uploaded_files" directory. It will then attempt to read the file contents and convert it to a markdown file. On success the response will be as such:
+
+```
+{
+    filename: <output markdown file name> 
+}
+```
+
+The filename returned is the file name to request a download of in order to download the generated markdown file to the client. See the details for endpoint GET /api/download-md/<filename>
+.
+#### GET Requests
+
+##### /api//intents
+GET Requests don't allow for a body.
+This method returns a list of all of the intents currently stored in the database.
+Response structure: an array of intents structured objects.
+```
+[
+    {
+        "expressions": [
+            "test",
+            "same",
+            "hey"
+        ],
+        "_id": "5e7c9e7fbbad2f0008825fda",
+        "name": "sam",
+        "__v": 2
+    }
+]
+```
+
+##### /api/intents/<intent_name>
+GET Requests don't allow for a body.
+This method returns an instance of a specific intent (the one specified in the endpoint).
+Response structure: an array of 1 or 0 intent structured object.
+For /api/intents/test
+```
+[
+    {
+        "expressions": [
+            "test",
+            "same",
+            "hey"
+        ],
+        "_id": "5e7c9e7fbbad2f0008825fda",
+        "name": "test",
+        "__v": 2
+    }
+]
+```
+
+If no intent named "test" is found in the database:
+```
+[]
+```
+
+##### /api/entities
+GET Requests don't allow for a body.
+This method returns a list of all of the entities currently stored in the database.
+Response structure: an array of entities structured objects.
+```
+[
+    {
+        "_id": "5e7cc9d3cebcc70008da1d46",
+        "name": "test_name",
+        "synonyms": [
+            {
+                "list": [
+                    "first item",
+                    "second item"
+                ],
+                "_id": "5e7cc9d3cebcc70008da1d47",
+                "synonym_reference": "reference 1"
+            },
+            {
+                "list": [
+                    "third item",
+                    "fourth item"
+                ],
+                "_id": "5e7cc9d3cebcc70008da1d48",
+                "synonym_reference": "reference 2"
+            }
+        ],
+        "date": "2020-03-26T15:27:15.507Z",
+        "__v": 0
+    }
+]
+```
+
+##### /api//entities/<entity_name>
+GET Requests don't allow for a body.
+This method returns an instance of a specific entity (the one specified in the endpoint).
+Response structure: an array of 1 or 0 entity structured object.
+For /api/entities/test
+```
+[
+    {
+        "expressions": [
+            "test",
+            "same",
+            "hey"
+        ],
+        "_id": "5e7c9e7fbbad2f0008825fda",
+        "name": "test",
+        "__v": 2
+    }
+]
+```
+
+If no intent named "test" is found in the database:
+```
+[]
+```
+
+##### /api/intents-analytics
+GET Requests don't allow for a body.
+This endpoint is used to get an overview of the amounts of different intents that are being worked on. It returns a list with the amounts of changes that were made on intents for every hour over the last week. 
+
+Response example:
+```
+[
+    {
+        "name": "Monday",
+        "value": 0,
+        "count": 2
+    },
+    {
+        "name": "Monday",
+        "value": 3,
+        "count": 1
+    },
+    {
+        "name": "Monday",
+        "value": 4,
+        "count": 1
+    },
+    .........,
+    {
+        "name": "Sunday",
+        "value": 23,
+        "count": 1
+    }
+]
+```
+Note: the response was cut as it will contain an entry for every hour over the last week. The response was formatted in this was such as to make frontend implementation as easy as possible.
+
+##### /api/entities-analytics
+Exactly the same as /api/intents-analytics but for entities, for details look above this paragraph.
+
+##### /api/download-md/<filename>
+Triggers a file download for the specified filename. 
+This is used in the CSV to Markdown conversion flow. A user would upload a file to the server which will then convert it to markdown (for details see the /api/upload-csv POST Request).
+That POST requests returns a filename of the markdown file that the user should download.
+
+#### DELETE Requests
+
+##### /api/intents/<intent_name>
+DELETE requests doesn't allow for a body.
+Deletes the specified intent from the database. If not name is specified in the endpoint, the following error message will be received, and the request status will be 400.
+
+```
+{
+    "error": true,
+    "message": "Intent name be specified in the endpoint."
+}
+```
+On deletion success, the following values are returned from the server, and the request status is then set to 200.
+
+```
+{
+    "deleted_count": 0,
+    "db_ok": true
+}
+```
+
+deleted_count shows the amount of entities removed from the database (is either 0 or 1). 0 signifies that no intent with that name was removed, 1 shows that a single intent was deleted from the database.
+
+##### /api/entities/<entity_name>
+DELETE requests doesn't allow for a body.
+Deletes the specified entity from the database. If not name is specified in the endpoint, the following error message will be received, and the request status will be 400.
+
+```
+{
+    "error": true,
+    "message": "Invalid request: no parameter specified in endpoint."
+}
+```
+On deletion success, the following values are returned from the server, and the request status is then set to 200.
+
+```
+{
+    "deleted_count": 0,
+    "db_ok": true
+}
+```
+
+deleted_count shows the amount of entities removed from the database (is either 0 or 1). 0 signifies that no entity with that name was removed, 1 shows that a single entity was deleted from the database.
+
 ## Database
 This system uses Mongodb run within a docker container. Once the container is running you can connect locally from the command line using the following command : 
 ```
