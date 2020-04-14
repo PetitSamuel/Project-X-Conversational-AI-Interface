@@ -83,7 +83,6 @@ Make sure to not have the containers running while you do this. If in doubt kill
 Here's a brief description on our API endpoints. First of all, all of our endpoints are defined in the router.js file in the server directory. It defines a list of endpoints and what function to map it to.
 
 #### POST Requests
-All the following endpoints work for POST http requests.
 ##### /api/intents
 Required body parameters (in JSON format):
 ```
@@ -193,7 +192,6 @@ The server will save the file locally (renamed using the current time such as to
 The filename returned is the file name to request a download of in order to download the generated markdown file to the client. See the details for endpoint GET /api/download-md/<filename>
 .
 #### GET Requests
-
 ##### /api/intents
 GET Requests don't allow for a body.
 This method returns a list of all of the intents currently stored in the database.
@@ -337,7 +335,6 @@ This is used in the CSV to Markdown conversion flow. A user would upload a file 
 That POST requests returns a filename of the markdown file that the user should download.
 
 #### DELETE Requests
-
 ##### /api/intents/<intent_name>
 DELETE requests doesn't allow for a body.
 Deletes the specified intent from the database. If not name is specified in the endpoint, the following error message will be received, and the request status will be 400.
