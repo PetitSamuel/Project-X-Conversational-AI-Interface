@@ -6,32 +6,7 @@ const generatorHelper = require("../Actions/generators");
 const analyticsHelper = require("../Actions/analytics_data_helpers");
 
 /*
-    Returns analytics data for intents in the past week. The return type is an array of object of the following structure:
-        {
-            name: string of the day
-            value: hour of the day
-            count: amount of intents last updated at that time
-        }
-    Request : 
-        GET to /api/intents-analytics
-    Response sample:
-        [
-            {
-                "name": "Monday",
-                "value": 0,
-                "count": 2
-            },
-            {
-                "name": "Monday",
-                "value": 3,
-                "count": 1
-            },
-            {
-                "name": "Tuesday",
-                "value": 5,
-                "count": 2
-            }
-        ]
+    Returns amounts of intents changed spread over the last week.
 */
 exports.get_intents_analytics = async function (req, res) {
     var lastWeek = new Date();
@@ -48,9 +23,7 @@ exports.get_intents_analytics = async function (req, res) {
 }
 
 /*
-    Same as get_intents_analytics (just above) but for entities.
-    Request: GET to /api/intents-analytics
-    See get_intents_analytics comment for more details.
+    Returns amounts of entities changed spread over the last week.
 */
 exports.get_entities_analytics = async function (req, res) {
     var lastWeek = new Date();
@@ -67,35 +40,8 @@ exports.get_entities_analytics = async function (req, res) {
 }
 
 /*
-    This a method only used to test specific features on the frontend.
-    Sending a POST to /api/intents-generation with and empty body will generate
-    100 intents between 1 week ago and now. Those intents are saved in the database.
-*/
-exports.generate_intents = async function (req, res) {
-    const MINS_IN_WEEK = 10080;
-    for (let i = 0; i < 100; i++) {
-        let name = generatorHelper.uuid();
-        var date1 = new Date();
-        date1.setMinutes(date1.getMinutes() - generatorHelper.randomInt(MINS_IN_WEEK));
-        let intent = new db.IntentsModel({
-            name: name,
-            expressions: [generatorHelper.uuid(), generatorHelper.uuid(), generatorHelper.uuid()],
-            last_updated: date1,
-        });
-        const newIntent = await intent.save();
-        if (newIntent !== intent) {
-            res.status(400).json({ "error": true, "message": "Error when saving to db.", "details": newIntent });
-            return;
-        }
-    }
-
-    res.status(200).json({ "message": "populated db with intents" });
-}
-
-/*
-    This a method only used to test specific features on the frontend.
-    Sending a POST to /api/entities-generation with and empty body will generate
-    100 entities between 1 week ago and now. Those intents are saved in the database.
+    Generate 100 random entities over the last week.
+    Only used of testing & dev purposes.
 */
 exports.generate_entities = async function (req, res) {
     const MINS_IN_WEEK = 10080;
@@ -103,19 +49,9 @@ exports.generate_entities = async function (req, res) {
         let name = generatorHelper.uuid();
         var date1 = new Date();
         date1.setMinutes(date1.getMinutes() - generatorHelper.randomInt(MINS_IN_WEEK));
-        let intent = new db.IntentsModel({
+        let entity = new db.EntitiesModel({
             name: name,
             expressions: [generatorHelper.uuid(), generatorHelper.uuid(), generatorHelper.uuid()],
-            last_updated: date1,
-        });
-        let entity = new db.EntitiesModel({
-            name: generatorHelper.uuid(),
-            synonyms: {
-                synonym_reference: generatorHelper.uuid(),
-                list: [
-                    generatorHelper.uuid(), generatorHelper.uuid(), generatorHelper.uuid(),
-                ],
-            },
             last_updated: date1,
         });
         const newEntity = await entity.save();
@@ -129,12 +65,41 @@ exports.generate_entities = async function (req, res) {
 }
 
 /*
+    Generate 100 random entities over the last week.
+    Only used of testing & dev purposes.
+*/
+exports.generate_intents = async function (req, res) {
+    const MINS_IN_WEEK = 10080;
+    for (let i = 0; i < 100; i++) {
+        let name = generatorHelper.uuid();
+        var date1 = new Date();
+        date1.setMinutes(date1.getMinutes() - generatorHelper.randomInt(MINS_IN_WEEK));
+        let intent = new db.IntentsModel({
+            name: generatorHelper.uuid(),
+            synonyms: {
+                synonym_reference: generatorHelper.uuid(),
+                list: [
+                    generatorHelper.uuid(), generatorHelper.uuid(), generatorHelper.uuid(),
+                ],
+            },
+            last_updated: date1,
+        });
+        const newIntent = await intent.save();
+        if (newIntent !== intent) {
+            res.status(400).json({ "error": true, "message": "Error when saving to db.", "details": newIntent });
+            return;
+        }
+    }
+
+    res.status(200).json({ "message": "populated db with intents" });
+}
+
+/*
  Helper function to clean the database for testing purposes (run before any kinds of tests are run)
  Note: Tests are run in a different database thus data in the dev db would not be overwritten
  */
 exports.clear_db = async function (done) {
-    let statusEntities = await db.EntitiesModel.deleteMany({});
-    let statusIntents = await db.IntentsModel.deleteMany({});
-    let statusDialogs = await db.DialogModel.deleteMany({});
+    await db.EntitiesModel.deleteMany({});
+    await db.IntentsModel.deleteMany({});
     done();
 };

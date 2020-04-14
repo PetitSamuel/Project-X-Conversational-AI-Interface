@@ -9,17 +9,8 @@ db.on('error', (error) => console.error(error));
 db.once('open', () => console.log('SERVER CONNECTED TO DATABASE'));
 
 var Schema = mongoose.Schema;
-var intentsSchema = new Schema({
-    name: {
-        type: String,
-        required: true,
-        unique: true,
-    },
-    expressions: [String],
-    last_updated: { type: Date, default: Date.now },
-});
 
-const entitiesSchema = new Schema(
+var intentsSchema = new Schema(
     {
         name: {
             type: String,
@@ -40,33 +31,21 @@ const entitiesSchema = new Schema(
     },
 );
 
-const dialogSchema = new Schema({
-    name: String,
-    created_at: { type: Date, default: Date.now },
-    updated_at: { type: Date, default: Date.now },
-    intent: {
-        name: {
-            name: String,
-            uid: { type: String, unique: true },
-        },
-        responses: [
-            {
-                condition: String,
-                output: [String],
-                outputType: String,
-                uid: String,
-            },
-        ],
+const entitiesSchema = new Schema({
+    name: {
+        type: String,
+        required: true,
+        unique: true,
     },
+    expressions: [String],
+    last_updated: { type: Date, default: Date.now }
 });
 
 const IntentsModel = mongoose.model('intents', intentsSchema);
 const EntitiesModel = mongoose.model('entities', entitiesSchema);
-const DialogModel = mongoose.model('dialog', dialogSchema);
 
 module.exports = {
     db: db,
     EntitiesModel: EntitiesModel,
     IntentsModel: IntentsModel,
-    DialogModel: DialogModel,
 }

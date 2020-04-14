@@ -3,6 +3,7 @@ var multer = require('multer')
 const path = require('path');
 var fs = require('fs');
 
+// setup file storage system, upload dir is inject from docker
 var uploadPath = path.join(__dirname + process.env.SERVER_UPLOAD_DIR);
 var storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -18,6 +19,7 @@ var storage = multer.diskStorage({
 
 var upload = multer({ storage: storage }).single('file')
 
+// handle saving csv file in server
 exports.post_upload_csv = async function (req, res) {
     upload(req, res, function (err) {
         if (err) {
@@ -33,6 +35,7 @@ exports.post_upload_csv = async function (req, res) {
     });
 }
 
+// trigger md file download
 exports.get_download_md = async function (req, res) {
     const file = uploadPath + "/" + req.params.filename;
     if (!file) {

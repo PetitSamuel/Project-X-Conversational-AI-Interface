@@ -5,7 +5,7 @@ const db_helper_api_controller = require('./Api/db_helper_api');
 const converter_api_controller = require('./Api/converter_api');
 
 /*
-    Define /api endpoints.
+    /api endpoints.
 */
 router.post('/intents', db_api_controller.post_intents);
 router.post('/intents-generation', db_helper_api_controller.generate_intents);
@@ -14,11 +14,11 @@ router.post('/entities-generation', db_helper_api_controller.generate_entities);
 router.post('/upload-csv', converter_api_controller.post_upload_csv);
 
 router.get('/intents', db_api_controller.get_intents);
-router.get('/intents-analytics', db_helper_api_controller.get_intents_analytics);
 router.get('/intents/:name', db_api_controller.get_intents);
 router.get('/entities', db_api_controller.get_entities);
-router.get('/entities-analytics', db_helper_api_controller.get_entities_analytics);
 router.get('/entities/:name', db_api_controller.get_entities);
+router.get('/intents-analytics', db_helper_api_controller.get_intents_analytics);
+router.get('/entities-analytics', db_helper_api_controller.get_entities_analytics);
 router.get('/download-md/:filename', converter_api_controller.get_download_md);
 
 router.delete('/intents/:name', db_api_controller.remove_intent);

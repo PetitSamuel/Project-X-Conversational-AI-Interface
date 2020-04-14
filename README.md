@@ -40,41 +40,51 @@ DATABASE_DATA=./db
 TEST_DATABASE_DATA=./testdb
 ```
 
+## Database
+This system uses Mongodb run within a docker container. Once the container is running you can connect locally from the command line using the following command : 
+```
+mongo --port 27017 -u "user" -p "password" --authenticationDatabase "db"
+```
+This will log you in as a normal user with read write access.
+
+If you need admin access then use the following : 
+
+```
+mongo --port 27017 -u "root" -p "root" --authenticationDatabase "db"
+```
+
+To note : 
+- These users are create when the database is initialised. The initialisation script is in the root directory : "init-db.js".
+- The docker image for mongo takes image user and password parameters as environment variables. I'm not quite sure if these are overwritten by our database initialisation script. Just in case, if you want to change passwords for database users, make sure to update the .env file as well as "init-db.js" and make sure that users and passwords match.
+
+To reset the database simply delete the database directory, in this case we have the following env variables:
+
+```
+DATABASE_DATA=./db
+TEST_DATABASE_DATA=./testdb
+```
+
+Thus we can delete the config and data for the different databases with:
+```
+// dev database
+sudo rm -rf db
+
+// testing database
+sudo rm -rf testdb
+```
+
+Make sure to not have the containers running while you do this. If in doubt kill all running containers with the end of tests script (read below for details):
+```
+./end-tests.sh
+```
+
+
 ## API
 Here's a brief description on our API endpoints. First of all, all of our endpoints are defined in the router.js file in the server directory. It defines a list of endpoints and what function to map it to.
 
 #### POST Requests
 All the following endpoints work for POST http requests.
 ##### /api/intents
-Required body parameters (in JSON format):
-```
-{
-    name: String,
-    expressions: String array
-}
-```
-If one of the parameters is not present or expressions is not an array then status code 400 will be returned and the body will look as follows:
-```
-{
-    error: true,
-    message: <reason for 400 status>
-}
-```
-
-On success, a response such as the following will be sent;
-```
-{
-    "expressions": [
-        "hello"
-    ],
-    "_id": "5e7cc18f5c14b30009de5865",
-    "name": "test_name",
-    "__v": 0
-}
-```
-Note that names are unique and thus if a request is received for a name that doesn't exists, then an intent of that name will be created with the expressions specified in that requests. If an intent name already exists and a post requests is received for that intent, the list of expressions for that intent will be overwritten with the ones received in the request. Thus this endpoint can also be used to delete a single or multiple expressions from an intent.
-
-##### /api/entities
 Required body parameters (in JSON format):
 ```
 {
@@ -112,7 +122,36 @@ On success, a response such as the following will be sent;
     "__v": 0
 }
 ```
-Note that names are unique and thus if a request is received for a name that doesn't exists, then an entity of that name will be created with the synonyms specified in that requests. If an entity name already exists and a post requests is received for that entity, the list of synonyms for that entity will be overwritten with the ones received in the request. Thus this endpoint can also be used to delete a single or multiple synonyms from an entity.
+Note that names are unique and thus if a request is received for a name that doesn't exists, then an intent of that name will be created with the synonyms specified in that requests. If an intent name already exists and a post requests is received for that intent, the list of synonyms for that intent will be overwritten with the ones received in the request. Thus this endpoint can also be used to delete a single or multiple synonyms from an intent.
+
+##### /api/entities
+Required body parameters (in JSON format):
+```
+{
+    name: String,
+    expressions: String array
+}
+```
+If one of the parameters is not present or expressions is not an array then status code 400 will be returned and the body will look as follows:
+```
+{
+    error: true,
+    message: <reason for 400 status>
+}
+```
+
+On success, a response such as the following will be sent;
+```
+{
+    "expressions": [
+        "hello"
+    ],
+    "_id": "5e7cc18f5c14b30009de5865",
+    "name": "test_name",
+    "__v": 0
+}
+```
+Note that names are unique and thus if a request is received for a name that doesn't exists, then an entity of that name will be created with the expressions specified in that requests. If an entity name already exists and a post requests is received for that entity, the list of expressions for that entity will be overwritten with the ones received in the request. Thus this endpoint can also be used to delete a single or multiple expressions from an entity.
 
 ##### /api/intents-generation
 This endpoint does not require a body. It is also not used in the frontent, its sole purpose was to generate intents in our database for testing purposes while developping.
@@ -155,21 +194,35 @@ The filename returned is the file name to request a download of in order to down
 .
 #### GET Requests
 
-##### /api//intents
+##### /api/intents
 GET Requests don't allow for a body.
 This method returns a list of all of the intents currently stored in the database.
 Response structure: an array of intents structured objects.
 ```
 [
     {
-        "expressions": [
-            "test",
-            "same",
-            "hey"
+        "_id": "5e7cc9d3cebcc70008da1d46",
+        "name": "test_name",
+        "synonyms": [
+            {
+                "list": [
+                    "first item",
+                    "second item"
+                ],
+                "_id": "5e7cc9d3cebcc70008da1d47",
+                "synonym_reference": "reference 1"
+            },
+            {
+                "list": [
+                    "third item",
+                    "fourth item"
+                ],
+                "_id": "5e7cc9d3cebcc70008da1d48",
+                "synonym_reference": "reference 2"
+            }
         ],
-        "_id": "5e7c9e7fbbad2f0008825fda",
-        "name": "sam",
-        "__v": 2
+        "date": "2020-03-26T15:27:15.507Z",
+        "__v": 0
     }
 ]
 ```
@@ -206,28 +259,14 @@ Response structure: an array of entities structured objects.
 ```
 [
     {
-        "_id": "5e7cc9d3cebcc70008da1d46",
-        "name": "test_name",
-        "synonyms": [
-            {
-                "list": [
-                    "first item",
-                    "second item"
-                ],
-                "_id": "5e7cc9d3cebcc70008da1d47",
-                "synonym_reference": "reference 1"
-            },
-            {
-                "list": [
-                    "third item",
-                    "fourth item"
-                ],
-                "_id": "5e7cc9d3cebcc70008da1d48",
-                "synonym_reference": "reference 2"
-            }
+        "expressions": [
+            "test",
+            "same",
+            "hey"
         ],
-        "date": "2020-03-26T15:27:15.507Z",
-        "__v": 0
+        "_id": "5e7c9e7fbbad2f0008825fda",
+        "name": "sam",
+        "__v": 2
     }
 ]
 ```
@@ -252,7 +291,7 @@ For /api/entities/test
 ]
 ```
 
-If no intent named "test" is found in the database:
+If no entity named "test" is found in the database:
 ```
 []
 ```
@@ -340,44 +379,6 @@ On deletion success, the following values are returned from the server, and the 
 ```
 
 deleted_count shows the amount of entities removed from the database (is either 0 or 1). 0 signifies that no entity with that name was removed, 1 shows that a single entity was deleted from the database.
-
-## Database
-This system uses Mongodb run within a docker container. Once the container is running you can connect locally from the command line using the following command : 
-```
-mongo --port 27017 -u "user" -p "password" --authenticationDatabase "db"
-```
-This will log you in as a normal user with read write access.
-
-If you need admin access then use the following : 
-
-```
-mongo --port 27017 -u "root" -p "root" --authenticationDatabase "db"
-```
-
-To note : 
-- These users are create when the database is initialised. The initialisation script is in the root directory : "init-db.js".
-- The docker image for mongo takes image user and password parameters as environment variables. I'm not quite sure if these are overwritten by our database initialisation script. Just in case, if you want to change passwords for database users, make sure to update the .env file as well as "init-db.js" and make sure that users and passwords match.
-
-To reset the database simply delete the database directory, in this case we have the following env variables:
-
-```
-DATABASE_DATA=./db
-TEST_DATABASE_DATA=./testdb
-```
-
-Thus we can delete the config and data for the different databases with:
-```
-// dev database
-sudo rm -rf db
-
-// testing database
-sudo rm -rf testdb
-```
-
-Make sure to not have the containers running while you do this. If in doubt kill all running containers with the end of tests script (read below for details):
-```
-./end-tests.sh
-```
 
 ## Testing the backend:
 To run backend tests, simply execute the **run-tests** script. It will run the testing docker setup which creates a testing image for the server and runs the services that it depends on.
