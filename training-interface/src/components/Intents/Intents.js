@@ -67,14 +67,14 @@ class Intents extends Component {
     console.log('Trying to remove:', arr);
 
     arr.forEach(e => {
-      var req = 'http://localhost:5000/api/entities/' + e.toString();
+      var req = 'http://localhost:5000/api/intents/' + e.toString();
       console.log('removing', req);
       promiseArr.push(axios.delete(req))
-    })
+    });
     Promise.all(promiseArr)
       .then(function (response) {
         console.log(response);
-        //window.location.reload(true);
+        window.location.reload(true);
       })
       .catch(function (error) {
         console.log(error);
@@ -108,11 +108,6 @@ class Intents extends Component {
       });
   }
 
-
-
-  //The form information is supposed to see by
-  //run 'json-server db.json -w -p 8000' in /server directory
-  //go 'http://localhost:8000/entities'
   render() {
 
     return (
@@ -123,7 +118,7 @@ class Intents extends Component {
           </InputGroup.Prepend>
           <FormControl
             type="text"
-            placeholder="Search for an entity"
+            placeholder="Search for an intent"
             aria-label="Input group example"
             aria-describedby="btnGroupAddon"
           />

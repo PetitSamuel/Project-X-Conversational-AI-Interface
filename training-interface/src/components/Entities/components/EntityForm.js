@@ -17,19 +17,19 @@ const EntityForm = ({ edit, editState }) => {
         name: e.target.value,
     });
 
-    const blankIntent = { expression: '' };
+    const blankEntity = { expression: '' };
     const [expressionState, setexpressionState] = useState([
-        { ...blankIntent },
+        { ...blankEntity },
     ]);
 
     const addEntity = () => {
-        setexpressionState([...expressionState, { ...blankIntent }]);
+        setexpressionState([...expressionState, { ...blankEntity }]);
     };
 
     const handleEntityChange = (e) => {
-        const updatedIntents = [...expressionState];
-        updatedIntents[e.target.dataset.idx] = e.target.value;
-        setexpressionState(updatedIntents);
+        const updatedEntities = [...expressionState];
+        updatedEntities[e.target.dataset.idx] = e.target.value;
+        setexpressionState(updatedEntities);
     };
 
 
@@ -61,21 +61,21 @@ const EntityForm = ({ edit, editState }) => {
     return (
         <Form onSubmit={handleSubmit}>
             {edit
-                ? <h4 style={{ paddingBottom: "6px" }}>Edit Intent</h4>
-                : <h4 style={{ paddingBottom: "6px" }}>Create New Intent</h4>
+                ? <h4 style={{ paddingBottom: "6px" }}>Edit Entity</h4>
+                : <h4 style={{ paddingBottom: "6px" }}>Create New Entity</h4>
             }
 
-            <Form.Group controlId="Intent">
-                <Form.Label>Intent</Form.Label>
-                <Form.Control type="text" placeholder="Enter an intent"
-                    name="intent"
+            <Form.Group controlId="Entity">
+                <Form.Label>Entity</Form.Label>
+                <Form.Control type="text" placeholder="Enter an entity"
+                    name="entity"
                     onChange={handleNameChange}
                 />
             </Form.Group>
 
 
 
-            <Form.Group controlId="Intent.Description">
+            <Form.Group controlId="Entity.Description">
                 <Form.Label>Expressions
                 <Button variant="secondary" size="sm" style={{ marginLeft: "5px", lineHeight: "1.3", borderRadius: "15px" }} value="Add another expression"
                         onClick={addEntity}>

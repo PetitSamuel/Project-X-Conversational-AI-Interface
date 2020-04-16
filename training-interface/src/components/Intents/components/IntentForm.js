@@ -61,9 +61,9 @@ const IntentForm = () => {
     return (
         <Form onSubmit={handleSubmit}>
             <Form.Group controlId="Intent">
-                <Form.Label>Entity reference</Form.Label>
-                <Form.Control type="text" placeholder="Enter entity reference"
-                    reference="entity"
+                <Form.Label>Intent reference</Form.Label>
+                <Form.Control type="text" placeholder="Enter intent reference"
+                    reference="intent"
                     onChange={handleNameChange}
                 />
             </Form.Group>
