@@ -324,7 +324,7 @@ Response example:
     }
 ]
 ```
-Note: the response was cut as it will contain an entry for every hour over the last week. The response was formatted in this was such as to make frontend implementation as easy as possible.
+Note: the response was cut as it will contain an entry for every hour over the last week which contains at least 1 change. The response was formatted in this was such as to make frontend implementation as easy as possible.
 
 ##### /api/entities-analytics
 Exactly the same as /api/intents-analytics but for entities, for details look above this paragraph.

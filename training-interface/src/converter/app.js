@@ -1,10 +1,14 @@
+/*
+  This is a standalone server which opens input.csv and formats it to md format. It has now been implemented 
+  in the system using file upload & downloading the converted file through the webapp.
+*/
+
 const http = require('http');
 const fs = require('fs');
 const readline = require('readline');
 const hostname = '127.0.0.1';
 const port = 3000;
 var fileInput = "input.csv";
-
 
 const server = http.createServer((req, res) => {
   res.statusCode = 200;
