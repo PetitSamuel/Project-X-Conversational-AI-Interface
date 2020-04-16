@@ -1,7 +1,6 @@
 export { default } from './IntentForm';
-export { default } from './IntentInputs';
-
-
+export { default } from './SynonymInput';
+export { default } from './SynonymList';
 
 
 

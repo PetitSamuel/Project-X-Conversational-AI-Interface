@@ -1,19 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const SynonymList = ({ idx, entityState, count, handleSynonymChange }) => {
+const SynonymList = ({ idx, intentState, count, handleSynonymChange }) => {
     const synonymId = `syn-${idx}`;
 
 
     return (
-        <div style ={{marginLeft:"10px"}} key={`exp-${idx}`} >
-            
+        <div style={{ marginLeft: "10px" }} key={`exp-${idx}`} >
+
             <input type="text" placeholder={`Synonym ${idx + 1}`}
                 name={count}
                 data-idx={idx}
                 id={synonymId}
                 className={count}
-                value={entityState[count].list[idx]}
+                value={intentState[count].list[idx]}
                 onChange={handleSynonymChange}
             />
         </div>

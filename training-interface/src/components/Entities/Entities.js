@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Button from 'react-bootstrap/Button'
 import InputGroup from 'react-bootstrap/InputGroup'
 import FormControl from 'react-bootstrap/FormControl'
 import Jumbotron from 'react-bootstrap/Jumbotron'
 import Container from 'react-bootstrap/Container'
+import Button from 'react-bootstrap/Button'
 import EntityForm from './components/EntityForm'
 import '../../App.css';
 
@@ -15,18 +15,22 @@ class Entities extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      intent: '',
       tableArray: null,
       removeList: [],
+      edit: false,
+      editState: null,
     };
+
     this.generateTable = this.generateTable.bind(this);
     this.handleCheck = this.handleCheck.bind(this);
     this.handleRemove = this.handleRemove.bind(this);
+    this.handleEdit = this.handleEdit.bind(this);
   }
 
   componentDidMount() {
     this.generateTable();
   }
-
 
   getData() {
     var getDatas = axios.get('http://localhost:5000/api/entities')
@@ -41,12 +45,18 @@ class Entities extends Component {
     return getDatas;
   }
 
+  handleEdit(intent) {
+    this.setState({ edit: true });
+    this.setState({ editState: intent });
+    console.log('Now state is', this.state.edit)
+  }
+
   handleCheck(e) {
     var inList = false;
     var arr = this.state.removeList;
     for (var i = 0; i < arr.length; i++) {
       //Remove if unchecked
-      if (arr[i] === e.target.name) {
+      if (arr[i] == e.target.name) {
         inList = true;
         arr.splice(i, 1)
         console.log('Removed', e.target.name)
@@ -61,7 +71,6 @@ class Entities extends Component {
   }
 
   handleRemove(e) {
-    e.preventDefault();
     var promiseArr = [];
     var arr = this.state.removeList;
     console.log('Trying to remove:', arr);
@@ -74,7 +83,7 @@ class Entities extends Component {
     Promise.all(promiseArr)
       .then(function (response) {
         console.log(response);
-        //window.location.reload(true);
+        window.location.reload(true);
       })
       .catch(function (error) {
         console.log(error);
@@ -82,7 +91,8 @@ class Entities extends Component {
   }
 
 
-  // Similar to intents, if I was to work more on this there would be a table component to prevent dupe
+
+  // Similar to entities, if I was to work more on this there would be a table component to prevent dupe
   generateTable() {
     this.getData()
       .then((response) => {
@@ -95,7 +105,12 @@ class Entities extends Component {
               <div className="custom-control custom-checkbox">
                 <input type="checkbox" className="custom-control-input" id={x[i]._id} onClick={this.handleCheck} name={x[i].name}></input>
                 <label className="custom-control-label" for={x[i]._id}> {x[i].name} </label>
+                <Button variant="outline-warning" size="sm" style={{ align: "right", marginLeft: "10px", lineHeight: "1.1", borderRadius: "10px" }}
+                  onClick={() => { this.handleEdit(x[i]) }}>
+                  +
+              </Button>
               </div>
+
             </div>
           )
           arr.push(element);
@@ -109,12 +124,10 @@ class Entities extends Component {
   }
 
 
-
   //The form information is supposed to see by
   //run 'json-server db.json -w -p 8000' in /server directory
-  //go 'http://localhost:8000/entities'
+  //go 'http://localhost:8000/intents'
   render() {
-
     return (
       <div>
         <InputGroup style={{ padding: "20px" }}>
@@ -123,12 +136,11 @@ class Entities extends Component {
           </InputGroup.Prepend>
           <FormControl
             type="text"
-            placeholder="Search for an entity"
+            placeholder="Search for an intent"
             aria-label="Input group example"
             aria-describedby="btnGroupAddon"
           />
         </InputGroup>
-
 
         <Row style={{ padding: "20px" }}>
           <Col lg={5}>
@@ -142,16 +154,15 @@ class Entities extends Component {
           </Col>
 
           <Col lg={7}>
-            {/* Ruxin I have just converted your form to React Bootstrap (makes styling easier)
-          https://react-bootstrap.netlify.com/components/forms/#forms */}
             <Jumbotron fluid style={{ width: "50%", padding: "20px" }}>
+              {/*This intent form is for creating intents*/}
               <EntityForm edit={this.state.edit} editState={this.state.edit} />
             </Jumbotron>
           </Col>
         </Row>
       </div>
-
     )
   }
 }
 export default Entities;
+
